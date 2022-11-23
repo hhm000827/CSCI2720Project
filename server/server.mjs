@@ -9,7 +9,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
 
-app.get("/api/createComment", (req, res) => {
+//! API for comment (CR)
+app.get("/createComment", (req, res) => {
   const commentObject = {
     location: req.query["location"],
     username: req.query["username"],
@@ -19,7 +20,7 @@ app.get("/api/createComment", (req, res) => {
   res.send("Success");
 });
 
-app.get("/api/findCommentsByLocation", (req, res) => {
+app.get("/findCommentsByLocation", (req, res) => {
   const location = req.query["location"];
   findCommentsByLocation(location);
   res.send("Success");
