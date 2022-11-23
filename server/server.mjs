@@ -1,6 +1,6 @@
 import { createRequire } from "module";
 import { fileURLToPath } from "url";
-import { createComment, findCommentsByLocation } from "./mongodb/commentTable/commentCrud.mjs";
+import { createComment, findCommentsByLocation, deleteComment } from "./mongodb/commentTable/commentCrud.mjs";
 
 const require = createRequire(import.meta.url);
 const express = require("express");
@@ -9,7 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
 
-//! API for comment (CR)
+//! API for comment (CRD)
 app.get("/createComment", (req, res) => {
   const commentObject = {
     location: req.query["location"],
@@ -23,6 +23,16 @@ app.get("/createComment", (req, res) => {
 app.get("/findCommentsByLocation", (req, res) => {
   const location = req.query["location"];
   findCommentsByLocation(location);
+  res.send("Success");
+});
+
+app.get("/deleteComment", (req, res) => {
+  const commentObject = {
+    location: req.query["location"],
+    username: req.query["username"],
+    comment: req.query["comment"],
+  };
+  deleteComment(commentObject);
   res.send("Success");
 });
 
