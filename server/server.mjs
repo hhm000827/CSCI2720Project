@@ -23,7 +23,7 @@ app.get("/createComment", (req, res) => {
     if (err) res.status(500).send(err);
     Comment.create(commentObject, (err, comment) => {
       if (err) res.status(501).send(err);
-      res.status(200).send("comment created:", comment);
+      res.status(200).send("comment created:" + comment);
     });
   });
 });
@@ -51,16 +51,73 @@ app.get("/deleteComment", (req, res) => {
 
 //! API for Account (CRUD)
 app.post("/createAccount", async (req, res) => {
-  const salt = await bcrypt.genSalt(10);
-  const accountObject = await buildAccountObject(req, salt);
-  await mongoose.connect(dbUrl, (err, db) => {
+  bcrypt.hash(req.body["password"], 10, (err, hash) => {
+    if (err) res.status(500).send("cannot hash");
+    const accountObject = buildAccountObject(req, hash);
+    mongoose.connect(dbUrl, (err, db) => {
+      if (err) res.status(500).send(err);
+      Account.create(accountObject, (err, result) => {
+        if (err) res.status(501).send(err);
+        res.status(200).send(result);
+      });
+    });
+  });
+});
+
+app.post("/verifyAccount", async (req, res) => {
+  mongoose.connect(dbUrl, (err, db) => {
     if (err) res.status(500).send(err);
-    Account.create(accountObject, (err, result) => {
+    Account.findOne({ username: req.body["username"] }, (err, result) => {
+      if (err) res.status(501).send(err);
+      if (!result) res.status(501).send("no user found");
+      else
+        bcrypt.compare(req.body["password"], result.password, (err, result) => {
+          if (err) res.status(500).send(err);
+          result ? res.status(200).send(true) : res.status(200).send(false);
+        });
+    });
+  });
+});
+
+app.post("/findAllAccount", async (req, res) => {
+  mongoose.connect(dbUrl, (err, db) => {
+    if (err) res.status(500).send(err);
+    Account.find((err, result) => {
+      if (err) res.status(501).send(err);
+      result ? res.status(200).send(result) : res.status(501).send("no user found");
+    });
+  });
+});
+
+app.post("/updateAccount", async (req, res) => {
+  mongoose.connect(dbUrl, (err, db) => {
+    if (err) res.status(500).send(err);
+    Account.findOne({ username: req.body["oldUsername"] }, (err, result) => {
+      if (err) res.status(501).send(err);
+      if (!result) res.status(501).send("no user found");
+      else {
+        bcrypt.hash(req.body["password"], 10, (err, hash) => {
+          if (err) res.status(500).send("cannot hash");
+          result.username = req.body["newUsername"];
+          result.password = hash;
+          result.save();
+          res.status(200).send("success");
+        });
+      }
+    });
+  });
+});
+
+app.post("/deleteAccount", async (req, res) => {
+  mongoose.connect(dbUrl, (err, db) => {
+    if (err) res.status(500).send(err);
+    Account.deleteOne({ username: req.body["username"] }, (err, result) => {
       if (err) res.status(501).send(err);
       res.status(200).send(result);
     });
   });
 });
+
 //! API for Venue (CRUD)
 
 app.use(express.static(path.join(__dirname, "../", "build")));
