@@ -3,15 +3,17 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const mongoose = require("mongoose");
 
-const CommentSchema = mongoose.Schema({
-  location: { type: String, required: true },
-  username: { type: String, required: true },
-  comment: { type: String, required: true },
+const AccountSchema = mongoose.Schema({
+  password: { type: String, required: true, minLength: 4, maxLength: 20 },
+  username: { type: String, required: true, unique: true, minLength: 4, maxLength: 20 },
+  role: { type: String, required: true },
+  salt: { type: String, required: true, unique: true },
+  favoritelist: { type: Array },
 });
-const Comment = mongoose.model("Comment", CommentSchema);
+const Account = mongoose.model("Account", AccountSchema);
 
-const buildCommentObject = (req) => {
-  return { location: req.query["location"], username: req.query["username"], comment: req.query["comment"] };
+const buildAccountObject = async (req, salt) => {
+  return { username: req.body["username"], password: req.body["password"], salt: salt, favoritelist: [], role: req.body["role"] };
 };
 
-export { Comment, buildCommentObject };
+export { Account, buildAccountObject };
