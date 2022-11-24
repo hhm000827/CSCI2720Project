@@ -1,5 +1,6 @@
 {
   "name": "csci2720project",
+  "homepage": ".",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
