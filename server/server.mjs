@@ -17,13 +17,13 @@ const dbUrl = "mongodb+srv://stu045:p011313W@cluster0.wenbhsm.mongodb.net/stu045
 app.use(bodyParser.urlencoded({ extended: false }));
 
 //! API for comment (CRD)
-app.get("/createComment", (req, res) => {
+app.post("/createComment", (req, res) => {
   const commentObject = buildCommentObject(req);
   mongoose.connect(dbUrl, (err, db) => {
     if (err) res.status(500).send(err);
     Comment.create(commentObject, (err, comment) => {
       if (err) res.status(501).send(err);
-      res.status(200).send("comment created:" + comment);
+      res.status(200).send(comment);
     });
   });
 });
@@ -38,7 +38,7 @@ app.get("/findCommentsByLocation", (req, res) => {
   });
 });
 
-app.get("/deleteComment", (req, res) => {
+app.delete("/deleteComment", (req, res) => {
   const commentObject = buildCommentObject(req);
   mongoose.connect(dbUrl, (err, db) => {
     if (err) res.status(500).send(err);
@@ -71,15 +71,15 @@ app.post("/verifyAccount", async (req, res) => {
       if (err) res.status(501).send(err);
       if (!result) res.status(501).send("no user found");
       else
-        bcrypt.compare(req.body["password"], result.password, (err, result) => {
+        bcrypt.compare(req.body["password"], result.password, (err, isMatch) => {
           if (err) res.status(500).send(err);
-          result ? res.status(200).send(true) : res.status(200).send(false);
+          isMatch ? res.status(200).send({ result: true, role: result.role }) : res.status(200).send(false);
         });
     });
   });
 });
 
-app.post("/findAllAccount", async (req, res) => {
+app.get("/findAllAccount", async (req, res) => {
   mongoose.connect(dbUrl, (err, db) => {
     if (err) res.status(500).send(err);
     Account.find((err, result) => {
@@ -89,7 +89,7 @@ app.post("/findAllAccount", async (req, res) => {
   });
 });
 
-app.post("/updateAccount", async (req, res) => {
+app.put("/updateAccount", async (req, res) => {
   mongoose.connect(dbUrl, (err, db) => {
     if (err) res.status(500).send(err);
     Account.findOne({ username: req.body["oldUsername"] }, (err, result) => {
@@ -108,7 +108,7 @@ app.post("/updateAccount", async (req, res) => {
   });
 });
 
-app.post("/deleteAccount", async (req, res) => {
+app.delete("/deleteAccount", async (req, res) => {
   mongoose.connect(dbUrl, (err, db) => {
     if (err) res.status(500).send(err);
     Account.deleteOne({ username: req.body["username"] }, (err, result) => {

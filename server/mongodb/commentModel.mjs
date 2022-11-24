@@ -11,7 +11,7 @@ const CommentSchema = mongoose.Schema({
 const Comment = mongoose.model("Comment", CommentSchema);
 
 const buildCommentObject = (req) => {
-  return { location: req.query["location"], username: req.query["username"], comment: req.query["comment"] };
+  return { location: req.body["location"], username: req.body["username"], comment: req.body["comment"] };
 };
 
 export { Comment, buildCommentObject };
