@@ -79,7 +79,7 @@ app.post("/verifyAccount", (req, res) => {
       else
         bcrypt.compare(req.body["password"], result.password, (err, isMatch) => {
           if (err) res.status(500).send(err);
-          isMatch ? res.status(200).send({ result: true, role: result.role }) : res.status(200).send(false);
+          isMatch ? res.status(200).send({ result: true, username: result.username, role: result.role }) : res.status(200).send(false);
         });
     });
   });
