@@ -23,4 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 #folder
+/config
 /src/config/googleKey.json
