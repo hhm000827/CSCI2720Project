@@ -57,7 +57,7 @@ app.post("/createAccount", (req, res) => {
     const accountObject = buildAccountObject(req, hash);
     mongoose.connect(dbUrl, (err, db) => {
       if (err) res.status(500).send(err);
-      Account.findOne((err, result) => {
+      Account.findOne({ username: accountObject.username }, (err, result) => {
         if (err) res.status(501).send(err);
         result
           ? res.status(501).send("account exists")
