@@ -172,6 +172,16 @@ app.get("/listOutLocation", (req, res) => {
   });
 });
 
+app.put("/updateVenueEvent", (req, res) => {
+  const venueObject = buildVenueObject(req);
+  mongoose.connect(dbUrl, (err, db) => {
+    if (err) res.status(500).send(err);
+    Venue.findOneAndUpdate({ eventid: venueObject.eventid }, venueObject, (err, result) => {
+      err ? res.status(501).send(err) : res.status(200).send(result);
+    });
+  });
+});
+
 app.delete("/deleteVenueEvent", (req, res) => {
   mongoose.connect(dbUrl, (err, db) => {
     if (err) res.status(500).send(err);
