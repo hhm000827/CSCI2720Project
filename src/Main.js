@@ -1,9 +1,9 @@
-import googleMap1 from "./component/Map";
+import ArtgoogleMap from "./component/Map";
 
 const Main = () => {
   return (
     <div>
-      <googleMap></googleMap>
+      <ArtgoogleMap></ArtgoogleMap>
     </div>
   );
 };

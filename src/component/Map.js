@@ -1,10 +1,8 @@
 import { GoogleMap, MarkerF, StandaloneSearchBox, useJsApiLoader } from "@react-google-maps/api";
-
 import React, { useEffect, useRef, useState } from "react";
-
 import googleKey from "../config/googleKey.json";
 
-function googleMap1() {
+function ArtgoogleMap() {
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: googleKey.googleKey,
   });
@@ -15,7 +13,7 @@ function googleMap1() {
   return isLoaded ? <Main /> : <Main />;
 }
 
-const Map = () => {
+const Main = () => {
   const searchBox = useRef(null);
   const [locations, setLocations] = useState([]);
   const [center, setCenter] = useState({
@@ -53,4 +51,4 @@ const Map = () => {
   );
 };
 
-export default React.memo(googleMap1);
+export default React.memo(ArtgoogleMap);
