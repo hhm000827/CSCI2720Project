@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import googleKey from "../config/googleKey.json";
 
-function PmsGoogleMap() {
+function googleMap() {
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: googleKey.googleKey,
   });
@@ -12,7 +12,7 @@ function PmsGoogleMap() {
   if (loadError) {
     return <div>Map cannot be loaded right now, sorry. You may refresh your browser.</div>;
   }
-  return isLoaded ? <Map /> : <Spinner animation="grow" />;
+  return isLoaded ? <Main /> : <Main />;
 }
 
 const Map = () => {
@@ -25,17 +25,12 @@ const Map = () => {
   const dataFetchedRef = useRef(false);
 
   useEffect(() => {
-    addValueInCountRow(locations);
-  }, [locations]);
-
-  useEffect(() => {
     if (dataFetchedRef.current) return;
     dataFetchedRef.current = true;
 
     navigator.geolocation.getCurrentPosition(function (position) {
       setCenter({ lat: position.coords.latitude, lng: position.coords.longitude });
     });
-
   }, []);
 
   const onLoad = (ref) => (searchBox.current = ref);
@@ -49,25 +44,13 @@ const Map = () => {
   };
 
   return (
-    <GoogleMap id="googleMap" center={center} zoom={15} options={{ minZoom: 10.5 }}>
+    <GoogleMap center={center} zoom={10.5} options={{ minZoom: 10.5 }}>
       <MarkerF position={center} />
       <StandaloneSearchBox onLoad={onLoad} onPlacesChanged={onPlacesChanged}>
         <input type="text" placeholder="Type your Location" />
       </StandaloneSearchBox>
-
-      {locations
-        ? locations.map((location) => {
-            let geoLocation = {
-              lat: Number(location.latitude),
-              lng: Number(location.longitude),
-            };
-            return (
-
-            );
-          })
-        : ""}
     </GoogleMap>
   );
 };
 
-export default React.memo(PmsGoogleMap);
+export default React.memo(googleMap);
