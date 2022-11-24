@@ -17,6 +17,8 @@ const app = express();
 const dbUrl = "mongodb+srv://stu045:p011313W@cluster0.wenbhsm.mongodb.net/stu045";
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use(express.static(path.join(__dirname, "../", "build")));
+
 //! API for comment (CRD)
 app.post("/createComment", (req, res) => {
   const commentObject = buildCommentObject(req);
@@ -192,5 +194,8 @@ app.delete("/deleteVenueEvent", (req, res) => {
   });
 });
 
-app.use(express.static(path.join(__dirname, "../", "build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "../../", "build/index.html"));
+});
+
 const server = app.listen(80);
