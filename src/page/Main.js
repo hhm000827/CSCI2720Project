@@ -1,4 +1,4 @@
-import ArtgoogleMap from "./component/Map";
+import ArtgoogleMap from "../component/Map";
 
 const Main = () => {
   return (
