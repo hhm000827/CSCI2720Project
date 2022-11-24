@@ -1,4 +1,5 @@
-import GoogleMap from "./component/Map";
+import googleMap1 from "./component/Map";
+
 const Main = () => {
   return (
     <div>

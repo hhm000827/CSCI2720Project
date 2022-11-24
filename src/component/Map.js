@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import googleKey from "../config/googleKey.json";
 
-function googleMap() {
+function googleMap1() {
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: googleKey.googleKey,
   });
@@ -53,4 +53,4 @@ const Map = () => {
   );
 };
 
-export default React.memo(googleMap);
+export default React.memo(googleMap1);
