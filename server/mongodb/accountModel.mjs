@@ -15,4 +15,8 @@ const buildAccountObject = (req, hashPassword) => {
   return { username: req.body["username"], password: hashPassword, favoritelist: [], role: req.body["role"] };
 };
 
-export { Account, buildAccountObject };
+const buildUpdateAccountObject = (req) => {
+  return { password: req.body["password"], oldUsername: req.body["oldUsername"], newUsername: req.body["newUsername"] };
+};
+
+export { Account, buildAccountObject, buildUpdateAccountObject };
