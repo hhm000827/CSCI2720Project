@@ -1,48 +1,26 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-
+import { Login } from "./page/Login";
+import Main from "./page/Main";
 function App() {
     return (
-        <Login />
-    );
-}
-
-function Login() {
-    return (
-        <div className="flex w-full h-screen items-center justify-center">
-            <div className="card max-w-xl lg:card-side bg-base-200 shadow-xl glass m-5">
-                <figure>
-                    <img
-                        src="https://www.hotel-icon.com/public/banner/images/nightviews%20banner.jpg"
-                        className="object-none w-96 lg:w-48 h-full"
-                        loading="lazy"
-                    />
-                </figure>
-                <div className="card-body">
-                    <h2 className="card-title justify-center">Login</h2>
-                    <div class="form-control w-full">
-                        <label class="label">
-                            <span class="label-text">Username</span>
-                        </label>
-                        <input
-                            type="text"
-                            placeholder="Username"
-                            class="input input-bordered w-full"
-                        />
-                        <label class="label">
-                            <span class="label-text">Password</span>
-                        </label>
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            class="input input-bordered w-full"
-                        />
-                    </div>
-                    <div className="card-actions mt-12">
-                        <button className="btn btn-outline w-full">
-                            Login
-                        </button>
-                    </div>
-                </div>
+        <div className="App">
+            {/* <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p className="w-px font-normal hover:font-bold">
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
+          Learn React
+        </a>
+      </header> */}
+            <div>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/main" element={<Main />}></Route>
+                        <Route path="/" element={<Login />}></Route>
+                    </Routes>
+                </BrowserRouter>
             </div>
         </div>
     );
