@@ -10,15 +10,21 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const cors = require('cors'); 
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
 const dbUrl = "mongodb+srv://stu045:p011313W@cluster0.wenbhsm.mongodb.net/stu045";
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(cors());
 
 mongoose.connect(dbUrl);
 const db = mongoose.connection;
+
+
+
 
 db.on("error", console.error.bind(console, "Connection error:"));
 db.once("open", function () {
