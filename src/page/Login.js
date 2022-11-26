@@ -58,7 +58,7 @@ function verifyForm() {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
-    fetch("http://localhost:80/verifyAccount", {
+    fetch("/verifyAccount", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
