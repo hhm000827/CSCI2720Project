@@ -235,7 +235,6 @@ db.once("open", function () {
                     }
                     if (count == 3) {
                       totalFulfillCount++;
-                      break;
                     }
                   }
                 }
