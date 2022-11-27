@@ -262,10 +262,10 @@ db.once("open", function () {
                     if (finalEventsToStore.length > 0) {
                       Venue.create(finalEventsToStore, (err, venueEvent) => {
                         if (err) res.status(501).send(err);
-                        res.status(200).send("The events and venues are updated!");
+                        res.status(200).send(eventsToStore);
                       });
                     } else {
-                      res.status(200).send("The events and venues are up to date! No update is performed!");
+                      res.status(200).send(eventsToStore);
                     }
                   }
                 });
