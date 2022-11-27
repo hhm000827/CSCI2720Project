@@ -36,7 +36,7 @@ const Nav = () => {
     <div className="navbar bg-base-300">
       <div className="flex-1">
         <span>
-          Welcome back, {user}, ({role})
+          Welcome back, {user} ({role})
         </span>
       </div>
       <div className="flex-none">
@@ -94,7 +94,7 @@ const Nav = () => {
 
 function Logout() {
   sessionStorage.clear();
-  window.location.assign("/login");
+  window.location.assign("/");
 }
 function backMain() {
   window.location.assign("/main");
