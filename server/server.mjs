@@ -11,6 +11,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const cors = require('cors'); 
+const xmlParser = require('xml2js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -163,7 +164,121 @@ db.once("open", function () {
   });
 
   app.delete("/deleteVenueEvent", (req, res) => {
-    Venue.findOneAndRemove({ eventid: req.body["eventid"] }, (err, result) => (err ? res.status(501).send(err) : res.status(200).send(result)));
+      Venue.findOneAndRemove({ eventid: req.body["eventid"] }, (err, result) => (err ? res.status(501).send(err) : res.status(200).send(result)));
+  });
+
+  //! API for Admin update events data in mongoDB
+  app.get("/updateXML", (req, res) => {
+    fetch("https://www.lcsd.gov.hk/datagovhk/event/events.xml")
+      .then((res) => res.text())
+      .then((str) => {
+        xmlParser.parseString(str, (err, result) => {
+          const venueCollection = new Map();
+          const events = result.events.event;
+
+          events.forEach((val, index) => {
+            if (venueCollection.has(val.venueid[0])) {
+              //Count number of events in a specific location, as only output venue has at least 3 events
+              const numOfEvent = venueCollection.get(val.venueid[0]) + 1;
+              venueCollection.set(val.venueid[0], numOfEvent);
+            } else {
+              venueCollection.set(val.venueid[0], 1);
+            }
+          });
+
+          //Sort venues according to the number of events
+          const tempVenuesArray = [...venueCollection.entries()].sort((a, b) => b[1] - a[1]);
+          let validVenuesArray = tempVenuesArray;
+
+          //Now Fetch Venues
+          fetch("https://www.lcsd.gov.hk/datagovhk/event/venues.xml")
+            .then((res1) => res1.text())
+            .then((str1) => {
+              xmlParser.parseString(str1, (err, result) => {
+                const xmlVenueInfos = result.venues.venue;
+                for (const [i, element] of validVenuesArray.entries()) {
+                  //Get Venues name, latitude, longitude
+                  for (let xmlVenueInfo of xmlVenueInfos) {
+                    if (xmlVenueInfo.$.id == element[0]) {
+                      validVenuesArray[i].push(xmlVenueInfo.venuee[0]);
+                      validVenuesArray[i].push(xmlVenueInfo.latitude[0]);
+                      validVenuesArray[i].push(xmlVenueInfo.longitude[0]);
+                      break;
+                    }
+                  }
+                }
+
+                let count = 0;
+                let totalFulfillCount = 0;
+
+                let eventsToStore = [];
+                let eventIdsToStore = [];
+                for (let venueVal of validVenuesArray) {
+                  count = 0;
+                  for (let val of events) {
+                    if (val.venueid[0] == venueVal[0]) {
+                      if (val.$.id && val.pricee[0] && val.titlee[0] && val.presenterorge[0] && val.predateE[0] && val.venueid[0] && venueVal[3] && venueVal[4] && venueVal[2]) {
+                        count += 1;
+                        let eventDescription = "no description";
+                        if (val.desce[0]) {
+                          eventDescription = val.desce[0];
+                        }
+                        const dataObj = {
+                          eventid: val.$.id,
+                          price: val.pricee[0],
+                          title: val.titlee[0],
+                          description: eventDescription,
+                          presenter: val.presenterorge[0],
+                          date: val.predateE[0],
+                          venueid: val.venueid[0],
+                          latitude: venueVal[3],
+                          longitude: venueVal[4],
+                          venuename: venueVal[2],
+                        }
+                        eventsToStore.push(dataObj);
+                        eventIdsToStore.push(val.$.id);
+                      }
+                    }
+                    if (count == 3) {
+                      totalFulfillCount++;
+                    }
+                  }
+                }
+
+                if (totalFulfillCount < 10) {
+                  console.log("Not Enough Valid records, i.e. 30 records with all required field not null!!");
+                  console.log(totalFulfillCount + " locations only...");
+                }
+                Venue.find({ eventid: { $in: eventIdsToStore } }, (err, result) => {
+                  if (err) res.status(501).send(err);
+                  else {
+                    let finalEventsToStore = JSON.parse(JSON.stringify(eventsToStore));
+                    //Remove those found in the DB from re-creating them
+                    if (result.length > 0) {
+                      for(var i = result.length - 1; i >= 0; i--){
+                        for(var ind = finalEventsToStore.length - 1; ind >= 0; ind--){
+                          if (result[i].eventid == finalEventsToStore[ind].eventid) {
+                            finalEventsToStore.splice(ind, 1);
+                            break;
+                          }
+                        }
+                      }
+                    }
+                    //Create all non-exists events
+                    if (finalEventsToStore.length > 0) {
+                      Venue.create(finalEventsToStore, (err, venueEvent) => {
+                        if (err) res.status(501).send(err);
+                        res.status(200).send("The events and venues are updated!");
+                      });
+                    } else {
+                      res.status(200).send("The events and venues are up to date! No update is performed!");
+                    }
+                  }
+                });
+              })
+            })
+        });
+      });
   });
 
   app.get("*", (req, res) => {
