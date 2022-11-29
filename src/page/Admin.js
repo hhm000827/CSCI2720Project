@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import Nav from "../component/Nav";
 import { Login } from "./Login";
 export function Admin() {
