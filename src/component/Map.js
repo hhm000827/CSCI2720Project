@@ -5,7 +5,13 @@ import googleKey from "../config/googleKey.json";
 import "./GoogleMap.css";
 const library = ["places"];
 
-function ArtgoogleMap() {
+const clickMarker = (venueName) => {
+  let pathParam = venueName.replace(/ /g, "_").split("(")[0];
+  if (pathParam[pathParam.length - 1] === "_") pathParam = pathParam.slice(0, -1);
+  window.location.assign(`/location/${pathParam}`);
+};
+
+function ArtgoogleMap(props) {
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: googleKey.googleKey,
     libraries: library,
@@ -14,17 +20,20 @@ function ArtgoogleMap() {
   if (loadError) {
     return <div>Map cannot be loaded right now, sorry. You may refresh your browser.</div>;
   }
-  return isLoaded ? <Map /> : <Spinner animation="grow" />;
+  return isLoaded ? <Map locationList={props.locationList} /> : <Spinner animation="grow" />;
 }
 
-const Map = () => {
+const Map = (props) => {
   const [searchBox, setSearchBox] = useState(null);
   const [center, setCenter] = useState({
     lat: 22.38,
     lng: 114.177216,
   });
+  const [locationList, setLocationList] = useState();
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setLocationList(props.locationList);
+  }, [props.locationList]);
 
   const onLoad = (ref) => setSearchBox(ref);
   const onPlacesChanged = () => {
@@ -38,7 +47,15 @@ const Map = () => {
 
   return (
     <GoogleMap id="googleMap" center={center} zoom={11}>
-      <MarkerF position={center} />
+      {locationList ? (
+        Object.entries(locationList).map(([key, value]) => {
+          let point = { lat: Number(locationList[key].latitude), lng: Number(locationList[key].longitude) };
+          return <MarkerF position={point} onClick={() => clickMarker(key)} />;
+        })
+      ) : (
+        <MarkerF position={center} />
+      )}
+
       <StandaloneSearchBox onLoad={onLoad} onPlacesChanged={onPlacesChanged}>
         <input type="text" id="googleSearch" placeholder="Type your Location" />
       </StandaloneSearchBox>

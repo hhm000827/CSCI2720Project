@@ -1,9 +1,9 @@
-import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
+import { Admin } from "./page/Admin";
+import { Location } from "./page/Location";
 import { Login } from "./page/Login";
 import Main from "./page/Main";
-import { Location } from "./page/Location";
-import { Admin } from "./page/Admin";
 function App() {
   return (
     <div className="App">
@@ -21,7 +21,7 @@ function App() {
           <Routes>
             <Route path="/main" element={<Main />}></Route>
             <Route path="/" element={<Login />}></Route>
-            <Route path="/location" element={<Location />}></Route>
+            <Route path="/location/:venueName" element={<Location />}></Route>
             <Route path="/admin" element={<Admin />}></Route>
           </Routes>
         </BrowserRouter>

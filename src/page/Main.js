@@ -54,7 +54,7 @@ const Main = () => {
       // </div>
       <div>
         <Nav></Nav>
-        <ArtgoogleMap></ArtgoogleMap>
+        <ArtgoogleMap locationList={locations}></ArtgoogleMap>
         <div className="overflow-x-auto w-full">
           <table className="table w-full">
             {" "}
