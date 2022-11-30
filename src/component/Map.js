@@ -47,14 +47,12 @@ const Map = (props) => {
 
   return (
     <GoogleMap id="googleMap" center={center} zoom={11}>
-      {locationList ? (
-        Object.entries(locationList).map(([key, value]) => {
-          let point = { lat: Number(locationList[key].latitude), lng: Number(locationList[key].longitude) };
-          return <MarkerF position={point} onClick={() => clickMarker(key)} />;
-        })
-      ) : (
-        <MarkerF position={center} />
-      )}
+      {locationList
+        ? Object.entries(locationList).map(([key, value]) => {
+            let point = { lat: Number(locationList[key].latitude), lng: Number(locationList[key].longitude) };
+            return <MarkerF position={point} onClick={() => clickMarker(key)} />;
+          })
+        : ""}
 
       <StandaloneSearchBox onLoad={onLoad} onPlacesChanged={onPlacesChanged}>
         <input type="text" id="googleSearch" placeholder="Type your Location" />
