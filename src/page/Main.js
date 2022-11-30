@@ -17,6 +17,7 @@ const Main = () => {
     })
       .then((res) => (res.status === 200 ? res.json() : res.text()))
       .then((data) => {
+        sessionStorage.setItem("event", JSON.stringify(data));
         let locationNames = [...new Set(data.map((item) => item.venuename))];
         let locationDict = {};
 
