@@ -17,7 +17,6 @@ export function Location() {
     lat: sessionStorageData[0].latitude,
     lng: sessionStorageData[0].longitude,
   };
-  const infoText = `You are visiting ${venueName}`;
 
   useEffect(() => {}, []);
 
@@ -25,7 +24,7 @@ export function Location() {
     return (
       <div>
         <Nav />
-        <LocationInfoBar text={infoText} />
+        <LocationInfoBar venueName={venueName} />
         <ArtgoogleMap center={mapCenter} />
         <LocationTable events={sessionStorageData} />
         <div class="grid grid-rows-1 grid-flow-col gap-0">
