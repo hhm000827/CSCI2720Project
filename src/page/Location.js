@@ -1,37 +1,21 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { CommentDisplay } from "../component/Comment";
 import { LocationInfoBar } from "../component/InfoBar";
 import Nav from "../component/Nav";
 import ArtgoogleMap from "../component/SingleLocationMap";
+import { LocationStatistic } from "../component/Statistic";
+import { LocationTable } from "../component/Table";
 import { Login } from "./Login";
-
-const FetchLocationInDb = (keyword) => {
-  let url = `/searchLocation?venuename=${keyword}`;
-  let result;
-
-  fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((res) => (res.status === 200 ? res.json() : res.text()))
-    .then((data) => {
-      result = typeof data === "string" ? [] : data;
-    });
-
-  return result;
-};
 
 export function Location() {
   let { venueName } = useParams();
   venueName = venueName.replace(/_/g, " ");
   const user = sessionStorage.getItem("username");
   const sessionStorageData = JSON.parse(sessionStorage.getItem("event")).filter((item) => item.venuename.includes(venueName));
-  const locationDataInDb = FetchLocationInDb(venueName);
   let mapCenter = {
-    lat: sessionStorageData ? sessionStorageData[0].latitude : locationDataInDb[0].latitude,
-    lng: sessionStorageData ? sessionStorageData[0].longitude : locationDataInDb[0].longitude,
+    lat: sessionStorageData[0].latitude,
+    lng: sessionStorageData[0].longitude,
   };
   const infoText = `You are visiting ${venueName}`;
 
@@ -43,6 +27,13 @@ export function Location() {
         <Nav />
         <LocationInfoBar text={infoText} />
         <ArtgoogleMap center={mapCenter} />
+        <LocationTable events={sessionStorageData} />
+        <div class="grid grid-rows-1 grid-flow-col gap-0">
+          <div>
+            <CommentDisplay venueName={venueName} />
+          </div>
+          <LocationStatistic venueName={venueName} sessionStorageData={sessionStorageData} />
+        </div>
       </div>
     );
   } else return <Login />;

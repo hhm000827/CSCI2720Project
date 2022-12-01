@@ -26,7 +26,7 @@ const Map = (props) => {
 
   return (
     <GoogleMap id="googleMap" center={center} zoom={zoom} options={{ gestureHandling: "none" }}>
-      <MarkerF position={center} />
+      {center && <MarkerF position={center} />}
     </GoogleMap>
   );
 };
