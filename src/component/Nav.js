@@ -1,6 +1,8 @@
 import React, { useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { renderToString } from "react-dom/server";
+
 const Nav = () => {
   let adminBar = null;
   const [user, setUser] = useState(sessionStorage.getItem("username"));
@@ -10,28 +12,31 @@ const Nav = () => {
   function handleKeyDown(event) {
     let url = "../searchLocation?venuename=" + searchBar.current.value;
     let location = [];
-    if (event.keyCode === 13) {
-      fetch(url, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((res) => (res.status === 200 ? res.json() : res.text()))
-        .then((data) => {
-          for (let i = 0; i < data.length; i++) location.push(data[i]["venuename"]);
-          for (let i = 0; i < location.length; i++) {
-            location[i] = location[i].split("(")[0];
-            location[i] = location[i].slice(0, -1);
-          }
-          location = [...new Set(location)];
-          console.log(location);
-
-          if (searchBar.current.value == "" || searchBar.current.value == " ") toast.error("Empty typing is invalid");
-          else if (false) toast.error("Invalid location");
-          //cannot get 501
-        });
-    }
+    fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => (res.status === 200 ? res.json() : res.text()))
+      .then((data) => {
+        for (let i = 0; i < data.length; i++) location.push(data[i]["venuename"]);
+        for (let i = 0; i < location.length; i++) {
+          location[i] = location[i].split("(")[0];
+          location[i] = location[i].slice(0, -1);
+        }
+        location = [...new Set(location)];
+        console.log(location);
+        for (let i = 0; i < location.length; i++) {
+          location[i] = <option value={location[i]}>{location[i]}</option>;
+          location[i] = renderToString(location[i]);
+        }
+        console.log(location);
+        if (searchBar.current.value == "" || searchBar.current.value == " ") toast.error("Empty typing is invalid");
+        else if (false) toast.error("Invalid location");
+        //cannot get 501
+      });
+    return location;
   }
 
   if (role === "admin") {
@@ -52,7 +57,8 @@ const Nav = () => {
         </div>
         <div className="flex-none">
           <div className="form-control">
-            <input ref={searchBar} type="text" onKeyDown={handleKeyDown} placeholder="Search" className="input input-bordered" />
+            <input ref={searchBar} list="locList" type="text" onChange={handleKeyDown} placeholder="Search" className="input input-bordered" />
+            <datalist id="locList">{Option}</datalist>
           </div>
           <ul className="menu menu-horizontal p-0">
             <button className="btn btn-ghost btn-circle" onClick={backMain}>
