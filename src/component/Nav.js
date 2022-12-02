@@ -8,7 +8,7 @@ const Nav = () => {
   const searchBar = useRef(null);
 
   function handleKeyDown(event) {
-    let url = "/searchLocation?venuename=" + searchBar.current.value;
+    let url = "../searchLocation?venuename=" + searchBar.current.value;
     if (event.keyCode === 13) {
       fetch(url, {
         method: "GET",
