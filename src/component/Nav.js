@@ -12,7 +12,6 @@ const Nav = () => {
   const user = useState(sessionStorage.getItem("username"));
   const role = useState(sessionStorage.getItem("role"));
   const [locationList, setLocationList] = useState();
-  const [searchBarKeyword, setSearchBarKeyword] = useState();
   const [filterList, setFilterList] = useState();
 
   const fetchLocationList = () => {
@@ -36,22 +35,25 @@ const Nav = () => {
       });
   };
 
-  function handleKeyDown(event) {
+  function handleKeyChange(event) {
     if (event.key === "Enter") {
-      if (!searchBarKeyword || /^\s*$/.test(searchBarKeyword)) toast.error("Empty typing is invalid");
-      else if (!isContained(locationList, searchBarKeyword)) toast.error("Invalid location");
+      let keyword = document.querySelector("#searchBarInput").value;
+      if (!keyword || /^\s*$/.test(keyword)) toast.error("Empty typing is invalid");
+      else if (!isContained(locationList, keyword)) toast.error("Invalid location");
       else {
-        let path = locationList.find((element) => element.toLowerCase() === searchBarKeyword.toLowerCase());
+        let path = locationList.find((element) => element.toLowerCase() === keyword.toLowerCase());
         path = path.replace(/ /g, "_");
         window.location.assign(`/location/${path}`);
       }
-    }
+    } else handleSearchKeywordChange();
   }
 
-  function handleSearchKeywordChange(e) {
-    setSearchBarKeyword(e.target.value);
-    let result = locationList.filter((item) => item.toLowerCase().includes(searchBarKeyword.toLowerCase()));
-    setFilterList(result);
+  function handleSearchKeywordChange() {
+    let keyword = document.querySelector("#searchBarInput").value;
+    if (locationList) {
+      let result = locationList.filter((item) => item.toLowerCase().includes(keyword.toLowerCase()));
+      if (result) setFilterList(result);
+    }
   }
 
   useEffect(() => {
@@ -76,11 +78,11 @@ const Nav = () => {
         </div>
         <div className="flex-none">
           <div className="form-control">
-            <input list="locList" type="text" onKeyDown={handleKeyDown} onInput={(e) => handleSearchKeywordChange(e)} placeholder="Search" className="input input-bordered" />
+            <input id="searchBarInput" list="locList" type="text" onKeyDown={(e) => handleKeyChange(e)} onInput={handleSearchKeywordChange} placeholder="Search" className="input input-bordered" />
             <datalist id="locList">
               {filterList &&
                 filterList.map((item) => {
-                  if (item.toLowerCase() !== searchBarKeyword.toLowerCase()) return <option>{item}</option>;
+                  if (item.toLowerCase() !== document.querySelector("#searchBarInput").value.toLowerCase()) return <option>{item}</option>;
                 })}
             </datalist>
           </div>
