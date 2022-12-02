@@ -36,7 +36,9 @@ db.once("open", function () {
   });
 
   app.get("/findCommentsByLocation", (req, res) => {
-    Comment.find({ location: { $regex: ".*" + req.query["location"] + ".*" } }, "location comment username -_id", (err, results) => (err ? res.status(501).send(err) : res.status(200).send(results)));
+    Comment.find({ location: { $regex: ".*" + req.query["location"] + ".*", $options: "i" } }, "location comment username -_id", (err, results) =>
+      err ? res.status(501).send(err) : res.status(200).send(results)
+    );
   });
 
   app.delete("/deleteComment", (req, res) => {
