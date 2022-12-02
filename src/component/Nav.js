@@ -19,16 +19,12 @@ const Nav = () => {
       })
         .then((res) => (res.status === 200 ? res.json() : res.text()))
         .then((data) => {
-          function getUniqueListBy(data, key) {
-            return [...new Map(data.map((item) => [item[key], item])).values()];
-          }
-          data = getUniqueListBy(data, "venuename");
-          console.log(data);
           for (let i = 0; i < data.length; i++) location.push(data[i]["venuename"]);
           for (let i = 0; i < location.length; i++) {
             location[i] = location[i].split("(")[0];
             location[i] = location[i].slice(0, -1);
           }
+          location = [...new Set(location)];
           console.log(location);
 
           if (searchBar.current.value == "" || searchBar.current.value == " ") toast.error("Empty typing is invalid");
