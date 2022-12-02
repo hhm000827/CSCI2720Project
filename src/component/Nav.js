@@ -1,18 +1,23 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Link } from "react-router-dom";
-import { renderToString } from "react-dom/server";
+
+const isContained = (arr, str) => {
+  if (!arr) return false;
+  return arr.some((element) => element.toLowerCase() === str.toLowerCase());
+};
 
 const Nav = () => {
   let adminBar = null;
-  const [user, setUser] = useState(sessionStorage.getItem("username"));
-  const [role, setRole] = useState(sessionStorage.getItem("role"));
-  const searchBar = useRef(null);
+  const user = useState(sessionStorage.getItem("username"));
+  const role = useState(sessionStorage.getItem("role"));
+  const [locationList, setLocationList] = useState();
+  const [searchBarKeyword, setSearchBarKeyword] = useState();
+  const [filterList, setFilterList] = useState();
 
-  function handleKeyDown(event) {
-    let url = "../searchLocation?venuename=" + searchBar.current.value;
+  const fetchLocationList = () => {
     let location = [];
-    fetch(url, {
+    fetch("/listOutLocation", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -26,18 +31,32 @@ const Nav = () => {
           location[i] = location[i].slice(0, -1);
         }
         location = [...new Set(location)];
-        console.log(location);
-        for (let i = 0; i < location.length; i++) {
-          location[i] = <option value={location[i]}>{location[i]}</option>;
-          location[i] = renderToString(location[i]);
-        }
-        console.log(location);
-        if (searchBar.current.value == "" || searchBar.current.value == " ") toast.error("Empty typing is invalid");
-        else if (false) toast.error("Invalid location");
-        //cannot get 501
+
+        setLocationList(location);
       });
-    return location;
+  };
+
+  function handleKeyDown(event) {
+    if (event.key === "Enter") {
+      if (!searchBarKeyword || /^\s*$/.test(searchBarKeyword)) toast.error("Empty typing is invalid");
+      else if (!isContained(locationList, searchBarKeyword)) toast.error("Invalid location");
+      else {
+        let path = locationList.find((element) => element.toLowerCase() === searchBarKeyword.toLowerCase());
+        path = path.replace(/ /g, "_");
+        window.location.assign(`/location/${path}`);
+      }
+    }
   }
+
+  function handleSearchKeywordChange(e) {
+    setSearchBarKeyword(e.target.value);
+    let result = locationList.filter((item) => item.toLowerCase().includes(searchBarKeyword.toLowerCase()));
+    setFilterList(result);
+  }
+
+  useEffect(() => {
+    fetchLocationList();
+  }, []);
 
   if (role === "admin") {
     adminBar = (
@@ -57,8 +76,13 @@ const Nav = () => {
         </div>
         <div className="flex-none">
           <div className="form-control">
-            <input ref={searchBar} list="locList" type="text" onChange={handleKeyDown} placeholder="Search" className="input input-bordered" />
-            <datalist id="locList">{Option}</datalist>
+            <input list="locList" type="text" onKeyDown={handleKeyDown} onInput={(e) => handleSearchKeywordChange(e)} placeholder="Search" className="input input-bordered" />
+            <datalist id="locList">
+              {filterList &&
+                filterList.map((item) => {
+                  if (item.toLowerCase() !== searchBarKeyword.toLowerCase()) return <option>{item}</option>;
+                })}
+            </datalist>
           </div>
           <ul className="menu menu-horizontal p-0">
             <button className="btn btn-ghost btn-circle" onClick={backMain}>
