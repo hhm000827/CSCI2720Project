@@ -1,9 +1,8 @@
-import { GoogleMap, MarkerF, StandaloneSearchBox, useJsApiLoader } from "@react-google-maps/api";
+import { GoogleMap, MarkerF, useJsApiLoader } from "@react-google-maps/api";
 import React, { useEffect, useState } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import googleKey from "../config/googleKey.json";
 import "./GoogleMap.css";
-const library = ["places"];
 
 const clickMarker = (venueName) => {
   let pathParam = venueName.replace(/ /g, "_").split("(")[0];
@@ -14,7 +13,6 @@ const clickMarker = (venueName) => {
 function ArtgoogleMap(props) {
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: googleKey.googleKey,
-    libraries: library,
   });
 
   if (loadError) {
@@ -24,7 +22,6 @@ function ArtgoogleMap(props) {
 }
 
 const Map = (props) => {
-  const [searchBox, setSearchBox] = useState(null);
   const [center, setCenter] = useState({
     lat: 22.38,
     lng: 114.177216,
@@ -35,15 +32,6 @@ const Map = (props) => {
     setLocationList(props.locationList);
   }, [props.locationList]);
 
-  const onLoad = (ref) => setSearchBox(ref);
-  const onPlacesChanged = () => {
-    let searchResult = () => {};
-    searchResult = searchBox.getPlaces();
-    setCenter({
-      lat: searchResult[0].geometry.location.lat(),
-      lng: searchResult[0].geometry.location.lng(),
-    });
-  };
 
   return (
     <GoogleMap id="googleMap" center={center} zoom={11}>
@@ -53,10 +41,6 @@ const Map = (props) => {
             return <MarkerF position={point} onClick={() => clickMarker(key)} />;
           })
         : ""}
-
-      <StandaloneSearchBox onLoad={onLoad} onPlacesChanged={onPlacesChanged}>
-        <input type="text" id="googleSearch" placeholder="Type your Location" />
-      </StandaloneSearchBox>
     </GoogleMap>
   );
 };
