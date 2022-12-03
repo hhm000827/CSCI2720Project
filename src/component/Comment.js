@@ -1,7 +1,42 @@
 import React, { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 const CommentDisplay = (props) => {
   const [comments, setComments] = useState();
+  const user = sessionStorage.getItem("username");
+
+  function submitComment() {
+    const comment = document.getElementById("comment").value;
+    if (comment) {
+      fetch("/createComment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: user,
+          location: props.venueName,
+          comment: comment.trim(),
+        }),
+      })
+        .then((res) => (res.status === 200 ? res.json() : res.text()))
+        .then((data) => {
+          if (typeof data === "object") {
+            document.getElementById("comment").value = "";
+            fetchComment();
+          } else {
+            toast.error("Wrong comment format!");
+          }
+        });
+    } else {
+      toast.error("Empty Commment!");
+    }
+  }
+  const pressEnter = (e) => {
+    if (e.key === "Enter") {
+      submitComment();
+    }
+  };
 
   const fetchComment = (venueName) => {
     let url = `/findCommentsByLocation?location=${venueName}`;
@@ -20,7 +55,7 @@ const CommentDisplay = (props) => {
 
   useEffect(() => {
     fetchComment(props.venueName);
-  }, []);
+  }, [comments]);
 
   return (
     <>
@@ -38,6 +73,15 @@ const CommentDisplay = (props) => {
                 </div>
               );
             })}
+          <div className="form-control">
+            {" "}
+            <textarea
+              id="comment"
+              className="textarea textarea-primary"
+              placeholder="Type your comment."
+              onKeyDown={pressEnter}
+            ></textarea>
+          </div>
         </div>
       </div>
     </>
