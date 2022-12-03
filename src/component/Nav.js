@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { FavoriteLocationDropdown } from "./DropdownMenu";
 
@@ -83,7 +83,6 @@ const Nav = () => {
 
   return (
     <>
-      <Toaster position="top-center" reverseOrder={false} toastOptions={{ duration: 2000 }} />
       <div className="navbar bg-base-300">
         <div className="flex-1">
           <span>

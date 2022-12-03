@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 const CommentDisplay = (props) => {
   const [comments, setComments] = useState();
@@ -89,3 +89,4 @@ const CommentDisplay = (props) => {
 };
 
 export { CommentDisplay };
+
