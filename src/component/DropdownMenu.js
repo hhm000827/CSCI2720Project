@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const DropdownMenu = (props) => {
   return (
@@ -48,7 +49,7 @@ const FavoriteLocationDropdown = (props) => {
       .then((res) => (res.status === 200 ? res.json() : res.text()))
       .then((data) => {
         toast.success("Removed from favorites");
-        setFavoriteList((favoriteList) => favoriteList.pull(data));
+        setFavoriteList((favoriteList) => favoriteList.filter((data) => data !== venueName));
       });
   };
 
