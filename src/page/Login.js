@@ -1,4 +1,4 @@
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 export function Login() {
   // thx Liam
@@ -10,7 +10,6 @@ export function Login() {
 
   return (
     <>
-      <Toaster position="bottom-center" reverseOrder={false} toastOptions={{ duration: 2000 }} />
       <div className="flex w-full h-screen items-center justify-center">
         <div className="card max-w-xl lg:card-side bg-base-200 shadow-xl glass m-5">
           <figure>
