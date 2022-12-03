@@ -36,7 +36,9 @@ db.once("open", function () {
   });
 
   app.get("/findCommentsByLocation", (req, res) => {
-    Comment.find({ location: { $regex: ".*" + req.query["location"] + ".*" } }, "location comment username -_id", (err, results) => (err ? res.status(501).send(err) : res.status(200).send(results)));
+    Comment.find({ location: { $regex: ".*" + req.query["location"] + ".*", $options: "i" } }, "location comment username -_id", (err, results) =>
+      err ? res.status(501).send(err) : res.status(200).send(results)
+    );
   });
 
   app.delete("/deleteComment", (req, res) => {
@@ -48,18 +50,20 @@ db.once("open", function () {
   app.post("/createAccount", (req, res) => {
     bcrypt.hash(req.body["password"], 10, (err, hash) => {
       if (err) res.status(500).send("cannot hash");
-      const accountObject = buildAccountObject(req, hash);
-      Account.findOne({ username: accountObject.username }, (err, result) => {
-        if (err) res.status(501).send(err);
-        else {
-          result
-            ? res.status(501).send("account exists")
-            : Account.create(accountObject, (err, result) => {
-                if (err) res.status(501).send(err);
-                res.status(200).send(result);
-              });
-        }
-      });
+      else {
+        const accountObject = buildAccountObject(req, hash);
+        Account.findOne({ username: accountObject.username }, (err, result) => {
+          if (err) res.status(501).send(err);
+          else {
+            result
+              ? res.status(501).send("account exists")
+              : Account.create(accountObject, (err, result) => {
+                  if (err) res.status(501).send(err);
+                  res.status(200).send(result);
+                });
+          }
+        });
+      }
     });
   });
 
@@ -106,10 +110,12 @@ db.once("open", function () {
           ? res.status(501).send("no user found")
           : bcrypt.hash(updateAccountObject.password, 10, (err, hash) => {
               if (err) res.status(500).send("cannot hash");
-              result.username = updateAccountObject.newUsername;
-              result.password = hash;
-              result.save();
-              res.status(200).send("success");
+              else {
+                result.username = updateAccountObject.newUsername;
+                result.password = hash;
+                result.save();
+                res.status(200).send("success");
+              }
             });
       }
     });
@@ -128,8 +134,7 @@ db.once("open", function () {
         result
           ? res.status(501).send("Event exists")
           : Venue.create(venueObject, (err, venueEvent) => {
-              if (err) res.status(501).send(err);
-              res.status(200).send(venueEvent);
+              err ? res.status(501).send(err) : res.status(200).send(venueEvent);
             });
       }
     });
@@ -162,6 +167,86 @@ db.once("open", function () {
 
   app.delete("/deleteVenueEvent", (req, res) => {
     Venue.findOneAndRemove({ eventid: req.body["eventid"] }, (err, result) => (err ? res.status(501).send(err) : res.status(200).send(result)));
+  });
+
+  //! API for Favorite Location (CRUD)
+  app.post("/createFavLoc", (req, res) => {
+    //Ensure username and favLoc exist
+    if (!(req.body["username"] && req.body["favLoc"])) {
+      res.status(400).send("Missing username or favLoc");
+    } else {
+      Account.findOne({ username: req.body["username"] }, (err, result) => {
+        if (err) res.status(501).send(err);
+        else {
+          if (result) {
+            //Result exists
+            if (result.favoritelist.includes(req.body["favLoc"])) {
+              //Already exists, not push again
+              res.status(200).send(result);
+            } else {
+              result.favoritelist.push(req.body["favLoc"]);
+              result.save((err, user) => {
+                if (err) {
+                  //Error when saving
+                  res.status(501).send(err);
+                } else {
+                  res.status(200).send(result);
+                }
+              });
+            }
+          } else {
+            //Result empty, User not found
+            res.status(501).send("User not found!");
+          }
+        }
+      });
+    }
+  });
+
+  app.get("/getFavLoc", (req, res) => {
+    Account.findOne({ username: req.query["username"] },"username favoritelist" ,(err, result) => {
+      if (err) res.status(501).send(err);
+      else {
+        if (result) {
+          res.status(200).send(result);
+        } else {
+          res.status(501).send("User not found!");
+        }
+      }
+    });
+  });
+
+  app.delete("/deleteFavLoc", (req, res) => {
+    //Ensure username and favLoc exist
+    if (!(req.body["username"] && req.body["favLoc"])) {
+      res.status(400).send("Missing username or favLoc");
+    } else {
+      Account.findOne({ username: req.body["username"] },"username favoritelist", (err, result) => {
+        if (err) res.status(501).send(err);
+        else {
+          if (result) {
+            //Result not empty, user exists
+            if (!(result.favoritelist.includes(req.body["favLoc"]))) {
+              //The favLoc not exists
+              res.status(404).send("The location to be deleted does not exist in user " + result.username);
+            } else {
+              //The favLoc exists, delete
+              result.favoritelist.pull(req.body["favLoc"]);
+              result.save((err, user) => {
+                if (err) {
+                  res.status(501).send(err);
+                } else {
+                  res.status(200).send(result);
+                }
+              });
+            }
+          } else {
+            //Result empty, User not found!
+            res.status(501).send("User not found!");
+          }
+        }
+      });
+    }
   });
 
   //! API for Admin update events data in mongoDB
