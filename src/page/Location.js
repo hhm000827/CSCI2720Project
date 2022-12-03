@@ -7,6 +7,7 @@ import ArtgoogleMap from "../component/SingleLocationMap";
 import { LocationStatistic } from "../component/Statistic";
 import { LocationTable } from "../component/Table";
 import { Login } from "./Login";
+import { Toaster } from "react-hot-toast";
 
 export function Location() {
   let { venueName } = useParams();
@@ -23,6 +24,7 @@ export function Location() {
   if (user) {
     return (
       <div>
+        <Toaster position="bottom-center" reverseOrder={false} toastOptions={{ duration: 2000 }} />
         <Nav />
         <LocationInfoBar venueName={venueName} />
         <ArtgoogleMap center={mapCenter} />

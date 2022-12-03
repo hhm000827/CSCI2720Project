@@ -204,7 +204,7 @@ db.once("open", function () {
   });
 
   app.get("/getFavLoc", (req, res) => {
-    Account.findOne({ username: req.body["username"] },"username favoritelist" ,(err, result) => {
+    Account.findOne({ username: req.query["username"] },"username favoritelist" ,(err, result) => {
       if (err) res.status(501).send(err);
       else {
         if (result) {
