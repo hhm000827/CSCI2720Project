@@ -36,7 +36,9 @@ db.once("open", function () {
   });
 
   app.get("/findCommentsByLocation", (req, res) => {
-    Comment.find({ location: { $regex: ".*" + req.query["location"] + ".*" } }, "location comment username -_id", (err, results) => (err ? res.status(501).send(err) : res.status(200).send(results)));
+    Comment.find({ location: { $regex: ".*" + req.query["location"] + ".*", $options: "i" } }, "location comment username -_id", (err, results) =>
+      err ? res.status(501).send(err) : res.status(200).send(results)
+    );
   });
 
   app.delete("/deleteComment", (req, res) => {
@@ -48,18 +50,20 @@ db.once("open", function () {
   app.post("/createAccount", (req, res) => {
     bcrypt.hash(req.body["password"], 10, (err, hash) => {
       if (err) res.status(500).send("cannot hash");
-      const accountObject = buildAccountObject(req, hash);
-      Account.findOne({ username: accountObject.username }, (err, result) => {
-        if (err) res.status(501).send(err);
-        else {
-          result
-            ? res.status(501).send("account exists")
-            : Account.create(accountObject, (err, result) => {
-                if (err) res.status(501).send(err);
-                res.status(200).send(result);
-              });
-        }
-      });
+      else {
+        const accountObject = buildAccountObject(req, hash);
+        Account.findOne({ username: accountObject.username }, (err, result) => {
+          if (err) res.status(501).send(err);
+          else {
+            result
+              ? res.status(501).send("account exists")
+              : Account.create(accountObject, (err, result) => {
+                  if (err) res.status(501).send(err);
+                  res.status(200).send(result);
+                });
+          }
+        });
+      }
     });
   });
 
@@ -106,10 +110,12 @@ db.once("open", function () {
           ? res.status(501).send("no user found")
           : bcrypt.hash(updateAccountObject.password, 10, (err, hash) => {
               if (err) res.status(500).send("cannot hash");
-              result.username = updateAccountObject.newUsername;
-              result.password = hash;
-              result.save();
-              res.status(200).send("success");
+              else {
+                result.username = updateAccountObject.newUsername;
+                result.password = hash;
+                result.save();
+                res.status(200).send("success");
+              }
             });
       }
     });
@@ -128,8 +134,7 @@ db.once("open", function () {
         result
           ? res.status(501).send("Event exists")
           : Venue.create(venueObject, (err, venueEvent) => {
-              if (err) res.status(501).send(err);
-              res.status(200).send(venueEvent);
+              err ? res.status(501).send(err) : res.status(200).send(venueEvent);
             });
       }
     });

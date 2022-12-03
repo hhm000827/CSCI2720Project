@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { currentDateTime } from "./Date";
 const LocationStatistic = (props) => {
   const [comments, setComments] = useState();
+  const dateTime = currentDateTime();
 
   const fetchComment = (venueName) => {
     let url = `/findCommentsByLocation?location=${venueName}`;
@@ -26,10 +28,12 @@ const LocationStatistic = (props) => {
       <div class="stat">
         <div class="stat-title">Number of Event</div>
         <div class="stat-value">{props.sessionStorageData ? props.sessionStorageData.length : 0}</div>
+        <div className="stat-desc">{dateTime}</div>
       </div>
       <div class="stat">
         <div class="stat-title">Number of Comment</div>
         <div class="stat-value">{comments ? comments.length : 0}</div>
+        <div className="stat-desc">{dateTime}</div>
       </div>
     </div>
   );
