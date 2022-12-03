@@ -22,16 +22,12 @@ function ArtgoogleMap(props) {
 }
 
 const Map = (props) => {
-  const [center, setCenter] = useState({
-    lat: 22.38,
-    lng: 114.177216,
-  });
+  const center = { lat: 22.38, lng: 114.177216 };
   const [locationList, setLocationList] = useState();
 
   useEffect(() => {
     setLocationList(props.locationList);
   }, [props.locationList]);
-
 
   return (
     <GoogleMap id="googleMap" center={center} zoom={11}>
