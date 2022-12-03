@@ -1,6 +1,13 @@
 import toast, { Toaster } from "react-hot-toast";
 
 export function Login() {
+  // thx Liam
+  const pressEnter = (e) => {
+    if (e.key === "Enter") {
+      verifyForm();
+    }
+  };
+
   return (
     <>
       <Toaster
@@ -28,6 +35,7 @@ export function Login() {
                 placeholder="Username"
                 id="username"
                 className="input input-bordered w-full"
+                onKeyPress={pressEnter}
               />
               <label className="label">
                 <span className="label-text">Password</span>
@@ -37,6 +45,7 @@ export function Login() {
                 placeholder="Password"
                 id="password"
                 className="input input-bordered w-full"
+                onKeyPress={pressEnter}
               />
             </div>
             <div className="card-actions mt-12">
