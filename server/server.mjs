@@ -141,7 +141,7 @@ db.once("open", function () {
   });
 
   app.get("/searchLocation", (req, res) => {
-    Venue.find({ venuename: req.query["venuename"] }, "eventid price title description presenter date latitude longitude venuename -_id", (err, result) => {
+    Venue.find({ venuename: { $regex: ".*" + req.query["venuename"] + ".*", $options: "i" } }, "eventid price title description presenter date latitude longitude venuename -_id", (err, result) => {
       if (err) res.status(501).send(err);
       else {
         result ? res.status(200).send(result) : res.status(501).send("no venue found");
