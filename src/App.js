@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import { Admin } from "./page/Admin";
+import { ShowEvent } from "./page/ShowEvent";
+import { ShowUserData } from "./page/ShowUserData";
 import { Location } from "./page/Location";
 import { Login } from "./page/Login";
 import Main from "./page/Main";
@@ -22,7 +23,8 @@ function App() {
             <Route path="/main" element={<Main />}></Route>
             <Route path="/" element={<Login />}></Route>
             <Route path="/location/:venueName" element={<Location />}></Route>
-            <Route path="/admin" element={<Admin />}></Route>
+            <Route path="/showEvent" element={<ShowEvent />}></Route>
+            <Route path="/showUserData" element={<ShowUserData />}></Route>
           </Routes>
         </BrowserRouter>
       </div>
