@@ -164,37 +164,38 @@ db.once("open", function () {
     Venue.findOneAndRemove({ eventid: req.body["eventid"] }, (err, result) => (err ? res.status(501).send(err) : res.status(200).send(result)));
   });
 
-  //! API for Favourite Location (CRUD)
+  //! API for Favorite Location (CRUD)
   app.post("/createFavLoc", (req, res) => {
     //Ensure username and favLoc exist
     if (!(req.body["username"] && req.body["favLoc"])) {
       res.status(400).send("Missing username or favLoc");
-    }
-    Account.findOne({ username: req.body["username"] }, (err, result) => {
-      if (err) res.status(501).send(err);
-      else {
-        if (result) {
-          //Result exists
-          if (result.favoritelist.includes(req.body["favLoc"])) {
-            //Already exists, not push again
-            res.status(200).send(result);
+    } else {
+      Account.findOne({ username: req.body["username"] }, (err, result) => {
+        if (err) res.status(501).send(err);
+        else {
+          if (result) {
+            //Result exists
+            if (result.favoritelist.includes(req.body["favLoc"])) {
+              //Already exists, not push again
+              res.status(200).send(result);
+            } else {
+              result.favoritelist.push(req.body["favLoc"]);
+              result.save((err, user) => {
+                if (err) {
+                  //Error when saving
+                  res.status(501).send(err);
+                } else {
+                  res.status(200).send(result);
+                }
+              });
+            }
           } else {
-            result.favoritelist.push(req.body["favLoc"]);
-            result.save((err, user) => {
-              if (err) {
-                //Error when saving
-                res.status(501).send(err);
-              } else {
-                res.status(200).send(result);
-              }
-            });
+            //Result empty, User not found
+            res.status(501).send("User not found!");
           }
-        } else {
-          //Result empty, User not found
-          res.status(501).send("User not found!");
         }
-      }
-    });
+      });
+    }
   });
 
   app.get("/getFavLoc", (req, res) => {
@@ -214,33 +215,34 @@ db.once("open", function () {
     //Ensure username and favLoc exist
     if (!(req.body["username"] && req.body["favLoc"])) {
       res.status(400).send("Missing username or favLoc");
-    }
-    Account.findOne({ username: req.body["username"] },"username favoritelist", (err, result) => {
-      if (err) res.status(501).send(err);
-      else {
-        if (result) {
-          //Result not empty, user exists
-          if (!(result.favoritelist.includes(req.body["favLoc"]))) {
-            //The favLoc not exists
-            res.status(404).send("The location to be deleted does not exist in user " + result.username);
+    } else {
+      Account.findOne({ username: req.body["username"] },"username favoritelist", (err, result) => {
+        if (err) res.status(501).send(err);
+        else {
+          if (result) {
+            //Result not empty, user exists
+            if (!(result.favoritelist.includes(req.body["favLoc"]))) {
+              //The favLoc not exists
+              res.status(404).send("The location to be deleted does not exist in user " + result.username);
+            } else {
+              //The favLoc exists, delete
+              result.favoritelist.pull(req.body["favLoc"]);
+              result.save((err, user) => {
+                if (err) {
+                  res.status(501).send(err);
+                } else {
+                  res.status(200).send(result);
+                }
+              });
+            }
           } else {
-            //The favLoc exists, delete
-            result.favoritelist.pull(req.body["favLoc"]);
-            result.save((err, user) => {
-              if (err) {
-                res.status(501).send(err);
-              } else {
-                res.status(200).send(result);
-              }
-            });
+            //Result empty, User not found!
+            res.status(501).send("User not found!");
           }
-        } else {
-          //Result empty, User not found!
-          res.status(501).send("User not found!");
         }
-      }
-    });
-  })
+      });
+    }
+  });
 
   //! API for Admin update events data in mongoDB
   app.get("/updateXML", (req, res) => {
