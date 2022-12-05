@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import Nav from "../component/Nav";
 import { LocationTable } from "../component/Table";
-import { Login } from "./Login";
 
 export function ShowEvent() {
   const role = sessionStorage.getItem("role");
@@ -40,6 +40,7 @@ export function ShowEvent() {
 
   useEffect(() => {
     fetchLocationList();
+    if (role !== "admin") toast.error("You are not admin, now you are redirected to login page!");
   }, []);
 
   if (role === "admin") {
@@ -65,6 +66,8 @@ export function ShowEvent() {
       </div>
     );
   } else {
-    return <Login />;
+    setTimeout(() => {
+      window.location.assign("/");
+    }, 1000);
   }
 }
