@@ -4,9 +4,9 @@ import { LocationTable } from "../component/Table";
 import { Login } from "./Login";
 
 export function ShowEvent() {
-  const [admin, setAdmin] = useState("admin");
+  const role = sessionStorage.getItem("role");
   const [locationList, setLocationList] = useState();
-  const [selected, setSelected] = useState("Show All locations");
+  const [selected, setSelected] = useState("Show All Locations");
   const fetchLocationList = () => {
     let location = [];
     fetch("/listOutLocation", {
@@ -32,22 +32,24 @@ export function ShowEvent() {
   };
 
   let find = (venueName) => {
-    venueName === "Show All locations" ? (venueName = " ") : (venueName = venueName);
-    const sessionStorageData = JSON.parse(sessionStorage.getItem("event")).filter((item) => item.venuename.includes(venueName));
+    let keyword;
+    venueName === "Show All Locations" ? (keyword = " ") : (keyword = venueName);
+    const sessionStorageData = JSON.parse(sessionStorage.getItem("event")).filter((item) => item.venuename.includes(keyword));
     return sessionStorageData;
   };
 
   useEffect(() => {
     fetchLocationList();
   }, []);
-  if (admin) {
+
+  if (role) {
     return (
       <div>
         <Nav />
         <div className="flex flex-row-reverse">
           <div>
             <select onChange={handleChange} className="select select-secondary w-80">
-              <option>Show All locations</option>
+              <option>Show All Locations</option>
               {locationList &&
                 locationList.map((item) => {
                   return (
