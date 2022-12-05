@@ -43,29 +43,26 @@ export function ShowEvent() {
   if (admin) {
     return (
       <div>
-        <Nav></Nav>ShowEvent<br></br>
-        <select onChange={handleChange} className="select select-secondary w-full mx-3 max-w-xs">
-          <option>Show All locations</option>
-          {locationList &&
-            locationList.map((item) => {
-              return (
-                <option>
-                  <a value={item}> {item}</a>
-                </option>
-              );
-            })}
-        </select>
-        <LocationTable events={find(selected)} />
-        <div>
-          <select className="select select-primary w-full max-w-xs">
-            <option>Create Event</option>
-            <option>Edit Event</option>
-            <option>Delete Event</option>
-          </select>
+        <Nav />
+        <div className="flex flex-row-reverse">
+          <div>
+            <select onChange={handleChange} className="select select-secondary w-80">
+              <option>Show All locations</option>
+              {locationList &&
+                locationList.map((item) => {
+                  return (
+                    <option>
+                      <a value={item}> {item}</a>
+                    </option>
+                  );
+                })}
+            </select>
+          </div>
         </div>
+        <LocationTable events={find(selected)} />
       </div>
     );
   } else {
-    return <Login></Login>;
+    return <Login />;
   }
 }
