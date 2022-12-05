@@ -42,7 +42,7 @@ export function ShowEvent() {
     fetchLocationList();
   }, []);
 
-  if (role) {
+  if (role === "admin") {
     return (
       <div>
         <Nav />
