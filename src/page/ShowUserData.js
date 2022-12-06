@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
+import { DropdownUserOperation } from "../component/DropdownUserOperation";
 import Nav from "../component/Nav";
 import { Login } from "./Login";
-import { DropdownUserOperation } from "../component/DropdownUserOperation";
 export function ShowUserData() {
-  const [admin, setAdmin] = useState("admin");
-  if (admin) {
+  const role = sessionStorage.getItem("role");
+  if (role == "admin") {
     return (
       <div>
         <Nav></Nav>ShowUserData
@@ -12,6 +12,6 @@ export function ShowUserData() {
       </div>
     );
   } else {
-    return <Login></Login>;
+    return <Login />;
   }
 }
