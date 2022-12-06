@@ -82,7 +82,7 @@ db.once("open", function () {
   });
 
   app.get("/findAccount", (req, res) => {
-    Account.findOne({ username: req.query["username"] }, "username password role favouritelist -_id", (err, result) => {
+    Account.findOne({ username: req.query["username"] }, "username password role favoritelist -_id", (err, result) => {
       if (err) res.status(501).send(err);
       else {
         result ? res.status(200).send(result) : res.status(501).send("no user found");
@@ -92,7 +92,7 @@ db.once("open", function () {
 
   app.get("/findAllAccount", (req, res) => {
     Account.find()
-      .select("username password role favouritelist -_id")
+      .select("username password role favoritelist -_id")
       .exec((err, result) => {
         if (err) res.status(501).send(err);
         else {
@@ -204,7 +204,7 @@ db.once("open", function () {
   });
 
   app.get("/getFavLoc", (req, res) => {
-    Account.findOne({ username: req.query["username"] },"username favoritelist" ,(err, result) => {
+    Account.findOne({ username: req.query["username"] }, "username favoritelist", (err, result) => {
       if (err) res.status(501).send(err);
       else {
         if (result) {
@@ -221,12 +221,12 @@ db.once("open", function () {
     if (!(req.body["username"] && req.body["favLoc"])) {
       res.status(400).send("Missing username or favLoc");
     } else {
-      Account.findOne({ username: req.body["username"] },"username favoritelist", (err, result) => {
+      Account.findOne({ username: req.body["username"] }, "username favoritelist", (err, result) => {
         if (err) res.status(501).send(err);
         else {
           if (result) {
             //Result not empty, user exists
-            if (!(result.favoritelist.includes(req.body["favLoc"]))) {
+            if (!result.favoritelist.includes(req.body["favLoc"])) {
               //The favLoc not exists
               res.status(404).send("The location to be deleted does not exist in user " + result.username);
             } else {
