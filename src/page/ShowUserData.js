@@ -7,6 +7,9 @@ export function ShowUserData() {
     const [filterData, setFilterData] = useState([]);
 
     useEffect(() => {
+        // check if the user is admin
+        setAdmin(sessionStorage.getItem("role"));
+
         fetch("/findAllAccount", {
             method: "GET",
             headers: {
@@ -20,7 +23,7 @@ export function ShowUserData() {
             });
     }, []);
 
-    if (admin) {
+    if (admin === "admin") {
         // filter the table with the search bar
         const filterTable = (event) => {
             const search = event.target.value;
@@ -57,6 +60,11 @@ export function ShowUserData() {
                                     <td>{user.username}</td>
                                     <td>{user.role}</td>
                                     <td>{user.favoritelist}</td>
+                                    <th>
+                                        <button>
+                                            Delete
+                                        </button>
+                                    </th>
                                 </tr>
                             ))}
                         </tbody>
@@ -65,6 +73,8 @@ export function ShowUserData() {
             </div>
         );
     } else {
-        return <Login></Login>;
+        return (
+          <Login />
+        );
     }
 }
