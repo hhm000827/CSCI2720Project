@@ -1,14 +1,23 @@
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import Nav from "../component/Nav";
-import { Login } from "./Login";
+
 export function ShowUserData() {
-    const [admin, setAdmin] = useState("admin");
     const [userData, setUserData] = useState([]);
     const [filterData, setFilterData] = useState([]);
+    const role = sessionStorage.getItem("role");
 
     useEffect(() => {
         // check if the user is admin
-        setAdmin(sessionStorage.getItem("role"));
+        if (role !== "admin") {
+            toast.error(
+                "You are not admin, now you are redirected to login page!"
+            );
+            // timeout for 1 seconds
+            setTimeout(() => {
+                window.location.assign("/");
+            }, 1000);
+        }
 
         fetch("/findAllAccount", {
             method: "GET",
@@ -23,7 +32,7 @@ export function ShowUserData() {
             });
     }, []);
 
-    if (admin === "admin") {
+    if (role === "admin") {
         // filter the table with the search bar
         const filterTable = (event) => {
             const search = event.target.value;
@@ -61,9 +70,7 @@ export function ShowUserData() {
                                     <td>{user.role}</td>
                                     <td>{user.favoritelist}</td>
                                     <th>
-                                        <button>
-                                            Delete
-                                        </button>
+                                        <button>Delete</button>
                                     </th>
                                 </tr>
                             ))}
@@ -71,10 +78,6 @@ export function ShowUserData() {
                     </table>
                 </div>
             </div>
-        );
-    } else {
-        return (
-          <Login />
         );
     }
 }
