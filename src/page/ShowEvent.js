@@ -47,7 +47,7 @@ export function ShowEvent() {
     return (
       <div>
         <Nav />
-        <div className="flex flex-row-reverse">
+        <div className="flex flex-row-reverse my-2">
           <div>
             <select onChange={handleChange} className="select select-secondary w-80">
               <option>Show All Locations</option>
