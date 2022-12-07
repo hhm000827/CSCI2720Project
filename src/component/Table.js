@@ -19,7 +19,7 @@ const LocationTable = (props) => {
                 <tr className="hover">
                   <td>
                     {event.title}
-                    <br /> <span class="badge badge-ghost badge-sm">Event Id: {event.eventid}</span>
+                    <br /> <span class="badge badge-ghost badge-sm">Event ID: {event.eventid}</span>
                   </td>
                   <td>{event.date}</td>
                   <td>{event.venuename}</td>

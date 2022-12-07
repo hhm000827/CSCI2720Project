@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { FavoriteLocationDropdown } from "./DropdownMenu";
 
@@ -51,9 +51,15 @@ const Nav = () => {
 
   function handleSearchKeywordChange() {
     let keyword = document.querySelector("#searchBarInput").value;
+<<<<<<< HEAD
     if (typeof locationList !== "undefined" && locationList.length > 0) {
       let result = locationList.filter((item) => item.toLowerCase().includes(keyword.toLowerCase()));
       if (typeof result !== "undefined" && result.length > 0) setFilterList(result);
+=======
+    if (locationList) {
+      let result = locationList.filter((item) => item.toLowerCase().includes(keyword.toLowerCase()));
+      if (result) setFilterList(result);
+>>>>>>> CRUD_showUserData
     }
   }
 
@@ -83,6 +89,7 @@ const Nav = () => {
 
   return (
     <>
+      <Toaster position="top-center" reverseOrder={false} toastOptions={{ duration: 2000 }} />
       <div className="navbar bg-base-300">
         <div className="flex-1">
           <span>

@@ -21,11 +21,11 @@ export function Login() {
               <label className="label">
                 <span className="label-text">Username</span>
               </label>
-              <input type="text" placeholder="Username" id="username" className="input input-bordered w-full" onKeyPress={pressEnter} />
+              <input type="text" placeholder="Username" id="username" className="input input-bordered w-full" onKeyDown={pressEnter}/>
               <label className="label">
                 <span className="label-text">Password</span>
               </label>
-              <input type="password" placeholder="Password" id="password" className="input input-bordered w-full" onKeyPress={pressEnter} />
+              <input type="password" placeholder="Password" id="password" className="input input-bordered w-full" onKeyDown={pressEnter}/>
             </div>
             <div className="card-actions mt-12">
               <button className="btn btn-outline w-full" onClick={verifyForm}>
