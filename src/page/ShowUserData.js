@@ -47,13 +47,14 @@ export function ShowUserData() {
         return (
             <div>
                 <Nav />
-                <h2>ShowUserData</h2>
-                <input
-                    type="text"
-                    placeholder="Search"
-                    className="input input-bordered input-primary w-full max-w-xs"
-                    onChange={filterTable}
-                />
+                <div className="flex flex-row-reverse my-2">
+                    <input
+                        type="text"
+                        placeholder="Search"
+                        className="input input-bordered input-primary w-full max-w-xs"
+                        onChange={filterTable}
+                    />
+                </div>
                 <div className="overflow-x-auto">
                     <table className="table w-full">
                         <thead>
