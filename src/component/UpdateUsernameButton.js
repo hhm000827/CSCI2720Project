@@ -38,7 +38,7 @@ const UpdateUsernameButton = ({ userinfo }) => {
           </svg>
         </button>
 
-      <div tabIndex={1} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-56 font-normal">
+      <div tabIndex={1} className="dropdown-content menu p-2 shadow bg-base-200 rounded-box w-56 font-normal">
         <form onSubmit={handleSubmit(data => updateUsername(data))}>
           <div className="form-control w-full max-w-xs">
 

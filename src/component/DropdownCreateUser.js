@@ -33,7 +33,7 @@ const DropdownCreateUser = (props) => {
         <label tabIndex={1} className="btn btn-active btn-ghost">
             Create User
         </label>
-        <div tabIndex={1} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+        <div tabIndex={1} className="dropdown-content menu p-2 shadow bg-base-200 rounded-box w-52">
           <form onSubmit={handleSubmit(data => submitCreateUserInfo(data))}>
             <div className="form-control w-full max-w-xs">
 
