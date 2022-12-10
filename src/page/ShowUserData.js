@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Nav from "../component/Nav";
-import { DropdownUserOperation } from "../component/DropdownUserOperation";
+import { DropdownCreateUser } from "../component/DropdownCreateUser";
+import { DeleteUserButton } from "../component/DeleteUserButton";
+import { UpdateUsernameButton } from "../component/UpdateUsernameButton";
+import { UpdatePasswordButton } from "../component/UpdatePasswordButton";
 
 export function ShowUserData() {
     const [userData, setUserData] = useState([]);
@@ -48,7 +51,8 @@ export function ShowUserData() {
         return (
             <div>
                 <Nav />
-                <div className="flex flex-row-reverse my-2">
+                <div className="flex flex-row justify-between items-center my-2">
+                    <DropdownCreateUser />
                     <input
                         type="text"
                         placeholder="Search"
@@ -56,7 +60,8 @@ export function ShowUserData() {
                         onChange={filterTable}
                     />
                 </div>
-                <div className="overflow-x-auto">
+                {/* <div className="overflow-x-auto"> */}
+                <div>
                     <table className="table w-full">
                         <thead>
                             <tr>
@@ -72,7 +77,13 @@ export function ShowUserData() {
                                     <td>{user.role}</td>
                                     <td>{user.favoritelist}</td>
                                     <th>
-                                        <button>Delete</button>
+                                        <UpdateUsernameButton className="font-normal" userinfo={user.username} />
+                                    </th>
+                                    <th>
+                                        <UpdatePasswordButton className="font-normal" userinfo={user.username} />
+                                    </th>
+                                    <th>
+                                        <DeleteUserButton className="font-normal" userinfo={user.username} />
                                     </th>
                                 </tr>
                             ))}
