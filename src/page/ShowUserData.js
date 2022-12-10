@@ -61,13 +61,16 @@ export function ShowUserData() {
                     />
                 </div>
                 {/* <div className="overflow-x-auto"> */}
-                <div>
-                    <table className="table w-full">
+                <div className="flex justify-center">
+                    <table className="table w-56">
                         <thead>
                             <tr>
                                 <th>Username</th>
                                 <th>Role</th>
                                 <th>Favorite Location</th>
+                                <th>Update Username</th>
+                                <th>Update Password</th>
+                                <th>Delete User</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -76,15 +79,15 @@ export function ShowUserData() {
                                     <td>{user.username}</td>
                                     <td>{user.role}</td>
                                     <td>{user.favoritelist}</td>
-                                    <th>
+                                    <td>
                                         <UpdateUsernameButton className="font-normal" userinfo={user.username} />
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         <UpdatePasswordButton className="font-normal" userinfo={user.username} />
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         <DeleteUserButton className="font-normal" userinfo={user.username} />
-                                    </th>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
