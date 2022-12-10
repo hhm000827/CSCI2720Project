@@ -32,10 +32,8 @@ const UpdatePasswordButton = ({ userinfo }) => {
 
   return (
     <div className="dropdown dropdown-bottom mx-3">
-      <label tabIndex={1}>
-        Update Password
-      </label>
-      <div tabIndex={1} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 font-normal">
+      <button tabIndex={1}>Update Password</button>
+      <div tabIndex={1} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-56 font-normal">
         <form onSubmit={handleSubmit(data => updatePassword(data))}>
           <div className="form-control w-full max-w-xs">
 
