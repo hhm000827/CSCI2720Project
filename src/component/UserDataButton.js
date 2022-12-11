@@ -147,7 +147,7 @@ const UpdatePasswordButton = ({ userinfo }) => {
           <div className="form-control w-full max-w-xs">
             <label className="label text-left block">
               <span className="label-text">New Password</span>
-              {errors.newPassword && <p className="text-red-500 text-xs">Password length needs between 4-20</p>}
+              {errors.password && <p className="text-red-500 text-xs">Password length needs between 4-20</p>}
             </label>
             <input
               type="text"
