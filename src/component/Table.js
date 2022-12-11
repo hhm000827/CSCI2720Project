@@ -1,6 +1,4 @@
-import { DeleteUserButton } from "./DeleteUserButton";
-import { UpdatePasswordButton } from "./UpdatePasswordButton";
-import { UpdateUsernameButton } from "./UpdateUsernameButton";
+import { DeleteUserButton, UpdatePasswordButton, UpdateUsernameButton } from "./UserDataButton";
 
 const LocationTable = (props) => {
   return (
