@@ -14,7 +14,7 @@ const DeleteUserButton = ({ userinfo }) => {
       .then((res) => (res.status === 200 ? res.json() : res.text()))
       .then((data) => {
         if (data.username) {
-          toast.success("User " + data.username + "deleted!");
+          toast.success("User " + data.username + " deleted!");
           setTimeout(() => {
             window.location.reload(false);
           }, 1000);

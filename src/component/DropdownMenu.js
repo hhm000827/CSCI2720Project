@@ -119,7 +119,7 @@ const DropdownCreateUser = (props) => {
       .then((res) => (res.status === 200 ? res.json() : res.text()))
       .then((data) => {
         if (data.username) {
-          toast.success("User " + data.username + "Created!");
+          toast.success("User " + data.username + " created!");
           setTimeout(() => {
             window.location.reload(false);
           }, 1000);
