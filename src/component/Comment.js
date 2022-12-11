@@ -23,7 +23,6 @@ const CommentDisplay = (props) => {
         .then((data) => {
           if (typeof data === "object") {
             document.getElementById("comment").value = "";
-            fetchComment();
           } else {
             toast.error("Wrong comment format!");
           }
@@ -32,9 +31,13 @@ const CommentDisplay = (props) => {
       toast.error("Empty Commment!");
     }
   }
+
   const pressEnter = (e) => {
     if (e.key === "Enter") {
       submitComment();
+      setTimeout(() => {
+        fetchComment(props.venueName);
+      }, 1000);
     }
   };
 
@@ -55,7 +58,7 @@ const CommentDisplay = (props) => {
 
   useEffect(() => {
     fetchComment(props.venueName);
-  }, [comments]);
+  }, []);
 
   return (
     <>
@@ -67,20 +70,12 @@ const CommentDisplay = (props) => {
               return (
                 <div className="chat chat-end">
                   <div className="chat-header">{comment.username}</div>
-                  <div className="chat-bubble chat-bubble-secondary">
-                    {comment.comment}
-                  </div>
+                  <div className="chat-bubble chat-bubble-secondary">{comment.comment}</div>
                 </div>
               );
             })}
           <div className="form-control">
-            {" "}
-            <textarea
-              id="comment"
-              className="textarea textarea-primary"
-              placeholder="Type your comment."
-              onKeyDown={pressEnter}
-            ></textarea>
+            <textarea id="comment" className="textarea textarea-primary" placeholder="Type your comment." onKeyDown={pressEnter}></textarea>
           </div>
         </div>
       </div>
@@ -89,4 +84,3 @@ const CommentDisplay = (props) => {
 };
 
 export { CommentDisplay };
-
