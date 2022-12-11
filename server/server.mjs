@@ -1,6 +1,6 @@
 import { createRequire } from "module";
 import { fileURLToPath } from "url";
-import { Account, buildAccountObject, buildUpdateAccountObject } from "./mongodb/accountModel.mjs";
+import { Account, buildAccountObject } from "./mongodb/accountModel.mjs";
 import { buildCommentObject, Comment } from "./mongodb/commentModel.mjs";
 import { buildVenueObject, Venue } from "./mongodb/venueModel.mjs";
 
@@ -113,9 +113,7 @@ db.once("open", function () {
               else {
                 nextResult
                   ? res.status(501).send("The new username has registered, please rename the username!")
-                  :   result.username = req.body["newUsername"];
-                      result.save();
-                      res.status(200).send("success");;
+                  : ((result.username = req.body["newUsername"]), result.save(), res.status(200).send("success"));
               }
             });
       }
@@ -137,8 +135,7 @@ db.once("open", function () {
                 result.save();
                 res.status(200).send("success");
               }
-          });
-          
+            });
       }
     });
   });
