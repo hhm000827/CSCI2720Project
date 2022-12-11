@@ -5,7 +5,7 @@ import { LocationInfoBar } from "../component/InfoBar";
 import Nav from "../component/Nav";
 import ArtgoogleMap from "../component/SingleLocationMap";
 import { LocationStatistic } from "../component/Statistic";
-import { LocationTable } from "../component/Table";
+import { LocationTable } from "../component/NewTable";
 import { Login } from "./Login";
 
 export function Location() {
