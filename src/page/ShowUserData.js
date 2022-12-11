@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { DropdownCreateUser } from "../component/DropdownCreateUser";
+import { DropdownCreateUser } from "../component/DropdownMenu";
 import Nav from "../component/Nav";
 import { UserTable } from "../component/Table";
 
@@ -8,6 +8,17 @@ export function ShowUserData() {
   const [userData, setUserData] = useState([]);
   const [filterData, setFilterData] = useState([]);
   const role = sessionStorage.getItem("role");
+
+  // filter the table with the search bar
+  const filterTable = (event) => {
+    const search = event.target.value;
+    const filteredData = userData.filter((user) => {
+      // filter by username
+      let username = user.username.toLowerCase();
+      return username.indexOf(search.toLowerCase()) !== -1;
+    });
+    setFilterData(filteredData);
+  };
 
   useEffect(() => {
     // check if the user is admin
@@ -33,17 +44,6 @@ export function ShowUserData() {
   }, []);
 
   if (role === "admin") {
-    // filter the table with the search bar
-    const filterTable = (event) => {
-      const search = event.target.value;
-      const filteredData = userData.filter((user) => {
-        // filter by username
-        let username = user.username.toLowerCase();
-        return username.indexOf(search.toLowerCase()) !== -1;
-      });
-      setFilterData(filteredData);
-    };
-
     return (
       <div>
         <Nav />
