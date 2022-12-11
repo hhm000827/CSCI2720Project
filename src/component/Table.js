@@ -1,6 +1,7 @@
 import React from "react";
 import toast from "react-hot-toast";
 import { DetailModal, UpdateEventModal } from "../component/Modal";
+import { DeleteUserButton, UpdatePasswordButton, UpdateUsernameButton } from "./UserDataButton";
 
 const AdminLocationTable = (props) => {
   function deleteEvent(event) {
@@ -115,4 +116,50 @@ const LocationTable = (props) => {
   );
 };
 
-export { AdminLocationTable, LocationTable };
+const UserTable = (props) => {
+  return (
+    <div className="flex justify-center">
+      <table className="table w-full">
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Role</th>
+            <th>Favorite Location</th>
+            <th>Update Username</th>
+            <th>Update Password</th>
+            <th>Delete User</th>
+          </tr>
+        </thead>
+        <tbody>
+          {props.filterData.map((user) => (
+            <tr className="hover">
+              <td>{user.username}</td>
+              <td>{user.role}</td>
+              <td>
+                {user.favoritelist.map((location) => {
+                  return (
+                    <>
+                      {location}
+                      <br />
+                    </>
+                  );
+                })}
+              </td>
+              <td>
+                <UpdateUsernameButton className="font-normal" userinfo={user.username} />
+              </td>
+              <td>
+                <UpdatePasswordButton className="font-normal" userinfo={user.username} />
+              </td>
+              <td>
+                <DeleteUserButton className="font-normal" userinfo={user.username} />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+export { AdminLocationTable, LocationTable, UserTable };

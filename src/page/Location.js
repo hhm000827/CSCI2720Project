@@ -27,7 +27,7 @@ export function Location() {
         <LocationInfoBar venueName={venueName} />
         <ArtgoogleMap center={mapCenter} />
         <LocationTable events={sessionStorageData} />
-        <div class="grid grid-rows-1 grid-flow-col gap-0">
+        <div className="grid grid-rows-1 grid-flow-col gap-0">
           <div>
             <CommentDisplay venueName={venueName} />
           </div>

@@ -1,6 +1,6 @@
 import { createRequire } from "module";
 import { fileURLToPath } from "url";
-import { Account, buildAccountObject, buildUpdateAccountObject } from "./mongodb/accountModel.mjs";
+import { Account, buildAccountObject } from "./mongodb/accountModel.mjs";
 import { buildCommentObject, Comment } from "./mongodb/commentModel.mjs";
 import { buildVenueObject, Venue } from "./mongodb/venueModel.mjs";
 
@@ -102,16 +102,35 @@ db.once("open", function () {
   });
 
   app.put("/updateAccount", (req, res) => {
-    let updateAccountObject = buildUpdateAccountObject(req);
-    Account.findOne({ username: updateAccountObject.oldUsername }, (err, result) => {
+    // let updateAccountObject = buildUpdateAccountObject(req);
+    Account.findOne({ username: req.body["oldUsername"] }, (err, result) => {
       if (err) res.status(501).send(err);
       else {
         !result
           ? res.status(501).send("no user found")
-          : bcrypt.hash(updateAccountObject.password, 10, (err, hash) => {
+          : Account.findOne({ username: req.body["newUsername"] }, (err, nextResult) => {
+              if (err) res.status(501).send(err);
+              else {
+                nextResult
+                  ? res.status(501).send("The new username has registered, please rename the username!")
+                  : ((result.username = req.body["newUsername"]), result.save(), res.status(200).send("success"));
+              }
+            });
+      }
+    });
+  });
+
+  app.put("/updateAccountPassword", (req, res) => {
+    let newPassword = req.body["password"];
+    Account.findOne({ username: req.body["username"] }, (err, result) => {
+      if (err) res.status(501).send(err);
+      else {
+        !result
+          ? res.status(501).send("no user found")
+          : bcrypt.hash(newPassword, 10, (err, hash) => {
               if (err) res.status(500).send("cannot hash");
               else {
-                result.username = updateAccountObject.newUsername;
+                result.username = req.body["username"];
                 result.password = hash;
                 result.save();
                 res.status(200).send("success");
