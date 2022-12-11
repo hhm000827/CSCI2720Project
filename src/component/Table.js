@@ -68,6 +68,9 @@ const AdminLocationTable = (props) => {
         <tfoot>
           <tr>
             <th>Event Title</th>
+            <th>Detail</th>
+            <th>Update Event</th>
+            <th>Delete</th>
           </tr>
         </tfoot>
       </table>
@@ -104,6 +107,7 @@ const LocationTable = (props) => {
         <tfoot>
           <tr>
             <th>Event Title</th>
+            <th>Detail</th>
           </tr>
         </tfoot>
       </table>
