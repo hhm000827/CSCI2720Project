@@ -115,10 +115,10 @@ const UpdateEventModal = (props) => {
           />
         </svg>
       </label>
-      <input type="checkbox" id={"update-event-modal".concat("-", props.event.eventid)} className="modal-toggle" />
+      <input type="checkbox" id={"update-event-modal".concat("-", props.event.eventid)} className="modal-toggle" onClick={() => reset()} />
       <div className="modal">
         <div className="modal-box relative">
-          <label htmlFor={"update-event-modal".concat("-", props.event.eventid)} className="btn btn-sm btn-circle absolute right-2 top-2" onClick={() => document.getElementById("updateForm").reset()}>
+          <label htmlFor={"update-event-modal".concat("-", props.event.eventid)} className="btn btn-sm btn-circle absolute right-2 top-2" onClick={() => reset()}>
             ✕
           </label>
           <h3 className="text-lg font-bold">Updating the event</h3>
@@ -304,7 +304,7 @@ const CreateEventModal = (props) => {
                 className="input input-bordered w-full max-w-xs"
                 {...register("eventid", {
                   required: "Event ID is required",
-                  min: { value: 0, message: "Event ID must at least 1" },
+                  min: { value: 1, message: "Event ID must at least 1" },
                 })}
               />
             </div>
