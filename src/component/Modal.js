@@ -165,7 +165,7 @@ const UpdateEventModal = (props) => {
                 {errors.date && <p className="text-red-500 text-xs">Date is required</p>}
               </label>
               <input
-                type="text"
+                type="datetime-local"
                 id={"date-update".concat("-", props.event.eventid)}
                 className={`input input-bordered w-full max-w-xs ${errors.date && "input-error"}`}
                 defaultValue={props.event.date}
@@ -349,7 +349,7 @@ const CreateEventModal = (props) => {
                 {errors.date && <p className="text-red-500 text-xs">Date is required</p>}
               </label>
               <input
-                type="text"
+                type="datetime-local"
                 id="date-create"
                 placeholder="Type here"
                 className={`input input-bordered w-full max-w-xs ${errors.date && "input-error"}`}
