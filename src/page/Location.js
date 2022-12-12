@@ -26,7 +26,7 @@ export function Location() {
                 <Nav />
                 <LocationInfoBar venueName={venueName} />
                 <ArtgoogleMap center={mapCenter} />
-                <div className="grid grid-rows-1 grid-flow-col gap-0">
+                <div className="grid grid-rows-1 md:grid-flow-col grid-flow-row gap-0">
                     <div className="flex flex-col">
                         <LocationStatistic
                             venueName={venueName}
