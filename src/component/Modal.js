@@ -17,7 +17,7 @@ const DetailModal = (props) => {
       <input type="checkbox" id={"detail-modal".concat("-", props.event.eventid)} className="modal-toggle" />
       <div className="modal">
         <div className="modal-box relative">
-          <label htmlFor={"detail-modal".concat("-", props.event.eventid)} className="btn btn-sm btn-circle absolute right-2 top-2">
+          <label htmlFor={"detail-modal".concat("-", props.event.eventid)} className="btn btn-sm btn-circle absolute right-2 top-2 btn-error">
             ✕
           </label>
           <h3 className="text-lg font-bold">Details of the event</h3>
@@ -118,7 +118,7 @@ const UpdateEventModal = (props) => {
       <input type="checkbox" id={"update-event-modal".concat("-", props.event.eventid)} className="modal-toggle" onClick={() => reset()} />
       <div className="modal">
         <div className="modal-box relative">
-          <label htmlFor={"update-event-modal".concat("-", props.event.eventid)} className="btn btn-sm btn-circle absolute right-2 top-2" onClick={() => reset()}>
+          <label htmlFor={"update-event-modal".concat("-", props.event.eventid)} className="btn btn-sm btn-circle absolute right-2 top-2 btn-error" onClick={() => reset()}>
             ✕
           </label>
           <h3 className="text-lg font-bold">Updating the event</h3>
@@ -130,7 +130,7 @@ const UpdateEventModal = (props) => {
               </label>
               <select
                 id="venue-create"
-                className="select select-bordered w-full max-w-xs"
+                className={`select select-bordered w-full max-w-xs ${errors.venue && "select-error"}`}
                 defaultValue=""
                 ref={venue}
                 {...register("venue", {
@@ -151,7 +151,7 @@ const UpdateEventModal = (props) => {
               <input
                 type="text"
                 id={"title-update".concat("-", props.event.eventid)}
-                className="input input-bordered w-full max-w-xs"
+                className={`input input-bordered w-full max-w-xs ${errors.title && "input-error"}`}
                 defaultValue={props.event.title}
                 ref={title}
                 {...register("title", {
@@ -167,7 +167,7 @@ const UpdateEventModal = (props) => {
               <input
                 type="text"
                 id={"date-update".concat("-", props.event.eventid)}
-                className="input input-bordered w-full max-w-xs"
+                className={`input input-bordered w-full max-w-xs ${errors.date && "input-error"}`}
                 defaultValue={props.event.date}
                 ref={date}
                 {...register("date", {
@@ -183,7 +183,7 @@ const UpdateEventModal = (props) => {
               <input
                 type="text"
                 id={"presenter-update".concat("-", props.event.eventid)}
-                className="input input-bordered w-full max-w-xs"
+                className={`input input-bordered w-full max-w-xs ${errors.presenter && "input-error"}`}
                 defaultValue={props.event.presenter}
                 ref={presenter}
                 {...register("presenter", {
@@ -199,7 +199,7 @@ const UpdateEventModal = (props) => {
               <input
                 type="text"
                 id={"description-update".concat("-", props.event.eventid)}
-                className="input input-bordered w-full max-w-xs"
+                className={`input input-bordered w-full max-w-xs ${errors.description && "input-error"}`}
                 defaultValue={props.event.description}
                 ref={description}
                 {...register("description", {
@@ -215,7 +215,7 @@ const UpdateEventModal = (props) => {
               <input
                 type="text"
                 id={"price-update".concat("-", props.event.eventid)}
-                className="input input-bordered w-full max-w-xs"
+                className={`input input-bordered w-full max-w-xs ${errors.price && "input-error"}`}
                 defaultValue={props.event.price}
                 ref={price}
                 {...register("price", {
@@ -225,12 +225,12 @@ const UpdateEventModal = (props) => {
             </div>
             <div className="flex flex-row space-x-4">
               <div>
-                <button type="submit" className="btn my-3">
+                <button type="submit" className="btn my-3 btn-success">
                   Submit
                 </button>
               </div>
               <div>
-                <button type="reset" className="btn my-3" onClick={() => reset()}>
+                <button type="reset" className="btn my-3 btn-info" onClick={() => reset()}>
                   Reset
                 </button>
               </div>
@@ -280,14 +280,14 @@ const CreateEventModal = (props) => {
   }
 
   return (
-    <div>
+    <div className="flex flex-row my-2 space-x-4">
       <label htmlFor="create-event-modal" className="btn btn-xs">
         Create a new event
       </label>
       <input type="checkbox" id="create-event-modal" className="modal-toggle" />
       <div className="modal">
         <div className="modal-box relative">
-          <label htmlFor="create-event-modal" className="btn btn-sm btn-circle absolute right-2 top-2">
+          <label htmlFor="create-event-modal" className="btn btn-sm btn-circle absolute right-2 top-2 btn-error">
             ✕
           </label>
           <h3 className="text-lg font-bold">Creating a new event</h3>
@@ -301,14 +301,13 @@ const CreateEventModal = (props) => {
                 type="number"
                 id="eventid-create"
                 placeholder="Type here"
-                className="input input-bordered w-full max-w-xs"
+                className={`input input-bordered w-full max-w-xs ${errors.eventid && "input-error"}`}
                 {...register("eventid", {
                   required: "Event ID is required",
                   min: { value: 1, message: "Event ID must at least 1" },
                 })}
               />
             </div>
-
             <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">Event venue</span>
@@ -316,7 +315,7 @@ const CreateEventModal = (props) => {
               </label>
               <select
                 id="venue-create"
-                className="select select-bordered w-full max-w-xs"
+                className={`select select-bordered w-full max-w-xs ${errors.venue && "select-error"}`}
                 {...register("venue", {
                   required: true,
                 })}
@@ -337,7 +336,7 @@ const CreateEventModal = (props) => {
                 type="text"
                 id="title-create"
                 placeholder="Type here"
-                className="input input-bordered w-full max-w-xs"
+                className={`input input-bordered w-full max-w-xs ${errors.title && "input-error"}`}
                 {...register("title", {
                   required: true,
                 })}
@@ -353,7 +352,7 @@ const CreateEventModal = (props) => {
                 type="text"
                 id="date-create"
                 placeholder="Type here"
-                className="input input-bordered w-full max-w-xs"
+                className={`input input-bordered w-full max-w-xs ${errors.date && "input-error"}`}
                 {...register("date", {
                   required: true,
                 })}
@@ -370,7 +369,7 @@ const CreateEventModal = (props) => {
                 type="text"
                 id="presenter-create"
                 placeholder="Type here"
-                className="input input-bordered w-full max-w-xs"
+                className={`input input-bordered w-full max-w-xs ${errors.presenter && "input-error"}`}
                 {...register("presenter", {
                   required: true,
                 })}
@@ -386,7 +385,7 @@ const CreateEventModal = (props) => {
                 type="text"
                 id="description-create"
                 placeholder="Type here"
-                className="input input-bordered w-full max-w-xs"
+                className={`input input-bordered w-full max-w-xs ${errors.description && "input-error"}`}
                 {...register("description", {
                   required: true,
                 })}
@@ -402,14 +401,14 @@ const CreateEventModal = (props) => {
                 type="text"
                 id="price-create"
                 placeholder="Type here"
-                className="input input-bordered w-full max-w-xs"
+                className={`input input-bordered w-full max-w-xs ${errors.price && "input-error"}`}
                 {...register("price", {
                   required: true,
                 })}
               />
             </div>
 
-            <button type="submit" className="btn my-3">
+            <button type="submit" className="btn my-3 btn-success">
               Submit
             </button>
           </form>

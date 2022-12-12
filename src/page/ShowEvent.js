@@ -84,7 +84,7 @@ export function ShowEvent() {
     return (
       <div>
         <Nav />
-        <div className="flex flex-row-reverse my-2">
+        <div className="flex flex-row-reverse my-2 space-x-4">
           <div>
             <select onChange={handleChange} className="select select-secondary w-100">
               <option>Show All Locations</option>
@@ -98,9 +98,8 @@ export function ShowEvent() {
                 })}
             </select>
           </div>
-          <div>
-            <CreateEventModal locations={filterLocationListWithInfo} />
-          </div>
+          <div />
+          <CreateEventModal locations={filterLocationListWithInfo} />
         </div>
         {locationList && <AdminLocationTable events={find(selected)} locations={filterLocationListWithInfo} />}
       </div>

@@ -95,7 +95,7 @@ const UpdateUsernameButton = ({ userinfo }) => {
               {...register("newUsername", { required: true, minLength: 4, maxLength: 20 })}
             />
           </div>
-          <input className="mt-4 input input-bordered" type="submit" value="Update" />
+          <input className="mt-4 btn btn-success input input-bordered" type="submit" value="Update" />
         </form>
       </div>
     </div>
@@ -156,7 +156,7 @@ const UpdatePasswordButton = ({ userinfo }) => {
               {...register("password", { required: true, minLength: 4, maxLength: 20 })}
             />
           </div>
-          <input className="mt-4 input input-bordered" type="submit" value="Update" />
+          <input className="btn btn-success mt-4 input input-bordered" type="submit" value="Update" />
         </form>
       </div>
     </div>
