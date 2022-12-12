@@ -5,8 +5,7 @@ import googleKey from "../config/googleKey.json";
 import "./GoogleMap.css";
 
 const clickMarker = (venueName) => {
-  let pathParam = venueName.replace(/ /g, "_").split("(")[0];
-  if (pathParam[pathParam.length - 1] === "_") pathParam = pathParam.slice(0, -1);
+  let pathParam = venueName.split("(")[0].trim().replace(/ /g, "_");
   window.location.assign(`/location/${pathParam}`);
 };
 

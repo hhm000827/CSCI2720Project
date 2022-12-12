@@ -119,7 +119,7 @@ const LocationTable = (props) => {
 const UserTable = (props) => {
   return (
     <div className="flex justify-center">
-      <table className="table w-full">
+      <table className="table w-full table-zebra">
         <thead>
           <tr>
             <th>Username</th>
