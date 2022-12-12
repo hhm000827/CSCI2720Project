@@ -16,12 +16,12 @@ const DetailModal = (props) => {
       </label>
       <input type="checkbox" id={"detail-modal".concat("-", props.event.eventid)} className="modal-toggle" />
       <div className="modal">
-        <div className="modal-box relative">
+        <div className="modal-box !max-w-none w-fit relative">
           <label htmlFor={"detail-modal".concat("-", props.event.eventid)} className="btn btn-sm btn-circle absolute right-2 top-2 btn-error">
             ✕
           </label>
           <h3 className="text-lg font-bold">Details of the event</h3>
-          <table className="table table-compact table-zebra w-full">
+          <table className="table table-compact table-zebra w-fit">
             <tbody>
               <tr>
                 <th>Event title</th>
