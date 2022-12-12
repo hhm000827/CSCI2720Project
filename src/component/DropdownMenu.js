@@ -179,7 +179,7 @@ const DropdownCreateUser = (props) => {
               <option value="user">User</option>
             </select>
           </div>
-          <input className="mt-4 input input-bordered" type="submit" value="Create" />
+          <input className="btn btn-success mt-4 input input-bordered" type="submit" value="Create" />
         </form>
       </div>
     </div>
