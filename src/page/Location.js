@@ -9,31 +9,34 @@ import { LocationTable } from "../component/Table";
 import { Login } from "./Login";
 
 export function Location() {
-  let { venueName } = useParams();
-  venueName = venueName.replace(/_/g, " ");
-  const user = sessionStorage.getItem("username");
-  const sessionStorageData = JSON.parse(sessionStorage.getItem("event")).filter((item) => item.venuename.includes(venueName));
-  let mapCenter = {
-    lat: sessionStorageData[0].latitude,
-    lng: sessionStorageData[0].longitude,
-  };
+    let { venueName } = useParams();
+    venueName = venueName.replace(/_/g, " ");
+    const user = sessionStorage.getItem("username");
+    const sessionStorageData = JSON.parse(
+        sessionStorage.getItem("event")
+    ).filter((item) => item.venuename.includes(venueName));
+    let mapCenter = {
+        lat: sessionStorageData[0].latitude,
+        lng: sessionStorageData[0].longitude,
+    };
 
-  useEffect(() => {}, []);
-
-  if (user) {
-    return (
-      <div>
-        <Nav />
-        <LocationInfoBar venueName={venueName} />
-        <ArtgoogleMap center={mapCenter} />
-        <LocationTable events={sessionStorageData} />
-        <div className="grid grid-rows-1 grid-flow-col gap-0">
-          <div>
-            <CommentDisplay venueName={venueName} />
-          </div>
-          <LocationStatistic venueName={venueName} sessionStorageData={sessionStorageData} />
-        </div>
-      </div>
-    );
-  } else return <Login />;
+    if (user) {
+        return (
+            <div>
+                <Nav />
+                <LocationInfoBar venueName={venueName} />
+                <ArtgoogleMap center={mapCenter} />
+                <div className="grid grid-rows-1 grid-flow-col gap-0">
+                    <div className="flex flex-col">
+                        <LocationStatistic
+                            venueName={venueName}
+                            sessionStorageData={sessionStorageData}
+                        />
+                        <CommentDisplay venueName={venueName} />
+                    </div>
+                    <LocationTable events={sessionStorageData} />
+                </div>
+            </div>
+        );
+    } else return <Login />;
 }
