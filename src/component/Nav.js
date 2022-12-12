@@ -75,7 +75,7 @@ const Nav = () => {
             <path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" />
           </svg>
         </a>
-        <ul className="p-2 bg-base-100 z-10">
+        <ul className="p-2 bg-base-100 z-10 right-0">
           <li>
             <Link to="/showEvent">Event page</Link>
           </li>
@@ -91,7 +91,7 @@ const Nav = () => {
     <div>
       {/* dropdown searchbar input if <md */}
       <div className="dropdown md:hidden dropdown-bottom dropdown-end dropdown-hover">
-        <label tabIndex={0} className="btn m-1 ">
+        <label tabIndex={0} className="btn m-1 btn-ghost">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
           </svg>
@@ -122,8 +122,11 @@ const Nav = () => {
   return (
     <div className="navbar bg-base-300">
       <div className="flex-1">
-        <span>
+        <span className="hidden md:block">
           Welcome back, {user} ({role})
+        </span>
+        <span className="md:hidden">
+          {user} ({role})
         </span>
         &nbsp;
         {role === "admin" ? (
