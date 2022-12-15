@@ -1,3 +1,6 @@
+// Hau Ho Man (1155142373) 	Li Pok Man (1155144098)
+// Chan Ho Him (1155142195)	Chan King Yu (1155142699)
+// Ng Hon Ling (1155136169)	Thalang Ikshahang (1155136408)
 import toast from "react-hot-toast";
 
 export function Login() {
@@ -21,11 +24,11 @@ export function Login() {
               <label className="label">
                 <span className="label-text">Username</span>
               </label>
-              <input type="text" placeholder="Username" id="username" className="input input-bordered w-full" onKeyDown={pressEnter}/>
+              <input type="text" placeholder="Username" id="username" className="input input-bordered w-full" onKeyDown={pressEnter} />
               <label className="label">
                 <span className="label-text">Password</span>
               </label>
-              <input type="password" placeholder="Password" id="password" className="input input-bordered w-full" onKeyDown={pressEnter}/>
+              <input type="password" placeholder="Password" id="password" className="input input-bordered w-full" onKeyDown={pressEnter} />
             </div>
             <div className="card-actions mt-12">
               <button className="btn btn-outline w-full" onClick={verifyForm}>
