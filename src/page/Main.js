@@ -2,13 +2,16 @@
 // Chan Ho Him (1155142195)	Chan King Yu (1155142699)
 // Ng Hon Ling (1155136169)	Thalang Ikshahang (1155136408)
 import React, { useEffect, useState } from "react";
+import { currentDateTime } from "../component/Date";
 import { DropdownMenu } from "../component/DropdownMenu";
 import ArtgoogleMap from "../component/Map";
 import Nav from "../component/Nav";
 import { Login } from "./Login";
+
 const Main = () => {
   const user = sessionStorage.getItem("username");
   const [locations, setLocations] = useState();
+  const date = currentDateTime();
 
   function sortOnNumberOfEvents(asc) {
     const sorted = Object.fromEntries(Object.entries(locations).sort(([, a], [, b]) => (asc ? a.numberOfEvents - b.numberOfEvents : b.numberOfEvents - a.numberOfEvents)));
@@ -96,7 +99,6 @@ const Main = () => {
         <ArtgoogleMap locationList={locations}></ArtgoogleMap>
         <div className="overflow-x-auto w-full">
           <table className="table w-full">
-            {" "}
             <thead>
               <tr>
                 <th>
@@ -136,6 +138,11 @@ const Main = () => {
             </tbody>
           </table>
         </div>
+        <footer className="footer p-4 bg-base-300 text-base-content">
+          <div>
+            <p>{currentDateTime()}</p>
+          </div>
+        </footer>
       </div>
     );
   }
