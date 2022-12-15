@@ -4,6 +4,8 @@
 4.  cd server
 5.  sudo node server.mjs
 
+URL Link: http://44.202.100.9/
+
 We have read this article carefully: http://www.cuhk.edu.hk/policy/academichonesty
 
 I am submitting the assignment for:
